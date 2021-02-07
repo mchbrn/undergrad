@@ -1,1 +1,1 @@
-# Limiting the Spread of Coronavirus in Cellular Automata using Deep Q-Learning
+# Optimising Lockdowns with Deep Q-Learning to Limit the Spread of SARS-CoV-2
