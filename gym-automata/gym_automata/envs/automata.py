@@ -22,18 +22,25 @@ class Automata(gym.Env):
         pass
 
 class Automaton:
-    def __init__(self, number, name, x, y):#, edges, hosts):
+    def __init__(self, number, name, x, y, hosts):
         self.number = number
         self.name = name
         self.x = x
         self.y = y
-        #self.edges = edges
-        #self.hosts = hosts
+        self.hosts = hosts
+        self.coordinates = []
+        
+        for i in range(x):
+            for j in range(y):
+                self.coordinates.append([i,j])
 
     def lock():
         pass
     
     def unlock():
+        pass
+
+    def moveHost():
         pass
 
 class Host:
@@ -64,7 +71,7 @@ vertices = []
 for index, data in df_env.iterrows():
     vertices.append(Automaton(data['Number'], data['Name'], data['X'], data['Y']))
 
-print(vertices[0].name)
+print(vertices[0].coordinates)
 
 df_pop = pd.read_csv('../../../data/population.csv')
 
@@ -73,5 +80,3 @@ hosts = []
 # Instantiate host objects and add to list
 for index, data in df_pop.iterrows():
     hosts.append(Host(data['Age'], data['Sex'], data['Ethnicity'], data['Employment'], data['Health'], 'S', 0, 0))
-
-print(hosts[0])
