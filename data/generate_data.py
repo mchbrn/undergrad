@@ -32,27 +32,27 @@ def sex(random2):
 def ethnicity(random3):
     # White
     if (random3 <= 0.889):
-        data = "We,"
+        data = "we,"
         return data
     # Mixed
     elif (random3 <= 0.914):
-        data = "Md,"
+        data = "md,"
         return data
     # Asian
     elif (random3 <= 0.956):
-        data = "An,"
+        data = "an,"
         return data
     # Black
     elif (random3 <= 0.982):
-        data = "Bk,"
+        data = "bk,"
         return data
     # Arab
     elif (random3 <= 0.994):
-        data = "Ab,"
+        data = "ab,"
         return data
     # Other
     elif (random3 <= 1.0):
-        data = "Or,"
+        data = "or,"
         return data
 
 def employment(random4, sex):
