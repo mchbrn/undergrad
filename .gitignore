@@ -1,4 +1,5 @@
 gym-automata/gym_automata.egg-info/
 gym-automata/gym_automata/__pycache__/
 gym-automata/gym_automata/envs/__pycache__/
+gym-automata/gym_automata/envs/dog.py
 logic

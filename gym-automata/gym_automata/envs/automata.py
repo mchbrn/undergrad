@@ -22,17 +22,21 @@ class Automata(gym.Env):
         pass
 
 class Automaton:
-    def __init__(self, number, name, x, y, hosts):
+    """All automata begin in an open or unlocked state"""
+
+    def __init__(self, number, name, x, y):
         self.number = number
         self.name = name
         self.x = x
         self.y = y
-        self.hosts = hosts
         self.coordinates = []
+        self.state = 1
         
         for i in range(x):
             for j in range(y):
                 self.coordinates.append([i,j])
+
+        print(name + " instantiated")
 
     def lock():
         pass
@@ -57,7 +61,10 @@ class Host:
     def move():
         pass
 
-    def changeState():
+    def getState():
+        pass
+
+    def setState():
         pass
 
     def infect():
@@ -69,7 +76,7 @@ vertices = []
 
 # Instantiate automaton objects and add to list
 for index, data in df_env.iterrows():
-    vertices.append(Automaton(data['Number'], data['Name'], data['X'], data['Y']))
+    vertices.append(Automaton(data['number'], data['name'], data['x'], data['y']))
 
 print(vertices[0].coordinates)
 
@@ -78,5 +85,5 @@ df_pop = pd.read_csv('../../../data/population.csv')
 hosts = []
 
 # Instantiate host objects and add to list
-for index, data in df_pop.iterrows():
-    hosts.append(Host(data['Age'], data['Sex'], data['Ethnicity'], data['Employment'], data['Health'], 'S', 0, 0))
+#for index, data in df_pop.iterrows():
+#    hosts.append(Host(data['Age'], data['Sex'], data['Ethnicity'], data['Employment'], data['Health'], 'S', 0, 0))

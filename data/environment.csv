@@ -1,31 +1,31 @@
-#,Ward
-1,"Allerton and Hunts Cross"
-2,"Anfield"
-3,"Belle Vale"
-4,"Central"
-5,"Childwall"
-6,"Church"
-7,"Clubmoor"
-8,"County"
-9,"Cressington"
-10,"Croxteth"
-11,"Everton"
-12,"Fazakerley"
-13,"Greenbank"
-14,"Kensington and Fairfield"
-15,"Kirkdale"
-16,"Knotty Ash"
-17,"Mossley Hill"
-18,"Norris Green"
-19,"Old Swan"
-20,"Picton"
-21,"Princes Park"
-22,"Riverside"
-23,"Speke-Garston"
-24,"St Michaels"
-25,"Tuebrook and Stoneycroft"
-26,"Warbeck"
-27,"Wavertree"
-28,"West Derby"
-29,"Woolton"
-30,"Yew Tree"
+number,name,x,y
+1,"Allerton and Hunts Cross",250,266
+2,"Anfield",125,183
+3,"Belle Vale",200,237
+4,"Central",174,200
+5,"Childwall",142,200
+6,"Church",175,184
+7,"Clubmoor",150,180
+8,"County",125,153
+9,"Cressington",151,200
+10,"Croxteth",200,224
+11,"Everton",180,200
+12,"Fazakerley",226,250
+13,"Greenbank",140,160
+14,"Kensington and Fairfield",155,200
+15,"Kirkdale",238,250
+16,"Knotty Ash",174,188
+17,"Mossley Hill",197,200
+18,"Norris Green",156,200
+19,"Old Swan",150,170
+20,"Picton",142,150
+21,"Princes Park",125,188
+22,"Riverside",199,200
+23,"Speke-Garston",343,360
+24,"St Michaels",150,174
+25,"Tuebrook and Stoneycroft",145,160
+26,"Warbeck",160,190
+27,"Wavertree",152,188
+28,"West Derby",188,192
+29,"Woolton",191,200
+30,"Yew Tree",200,208
