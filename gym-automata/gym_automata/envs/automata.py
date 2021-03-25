@@ -85,5 +85,5 @@ df_pop = pd.read_csv('../../../data/population.csv')
 hosts = []
 
 # Instantiate host objects and add to list
-#for index, data in df_pop.iterrows():
-#    hosts.append(Host(data['Age'], data['Sex'], data['Ethnicity'], data['Employment'], data['Health'], 'S', 0, 0))
+for index, data in df_pop.iterrows():
+    hosts.append(Host(data['Age'], data['Sex'], data['Ethnicity'], data['Employment'], data['Health'], 'S', 0, 0))
