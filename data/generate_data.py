@@ -107,94 +107,94 @@ def state(random6):
 
 def ward(random7):
     if (random7 <= 0.0318):
-        data = "1"
+        data = "0"
         return data
     elif (random7 <= 0.0629):
-        data = "2"
+        data = "1"
         return data
     elif (random7 <= 0.0951):
-        data = "3"
+        data = "2"
         return data
     elif (random7 <= 0.1387):
-        data = "4"
+        data = "3"
         return data
     elif (random7 <= 0.1685):
-        data = "5"
+        data = "4"
         return data
     elif (random7 <= 0.1985):
-        data = "6"
+        data = "5"
         return data
     elif (random7 <= 0.2312):
-        data = "7"
+        data = "6"
         return data
     elif (random7 <= 0.2613):
-        data = "8"
+        data = "7"
         return data
     elif (random7 <= 0.2924):
-        data = "9"
+        data = "8"
         return data
     elif (random7 <= 0.3236):
-        data = "10"
+        data = "9"
         return data
     elif (random7 <= 0.3553):
-        data = "11"
+        data = "10"
         return data
     elif (random7 <= 0.3913):
-        data = "12"
+        data = "11"
         return data
     elif (random7 <= 0.4259):
-        data = "13"
+        data = "12"
         return data
     elif (random7 <= 0.4589):
-        data = "14"
+        data = "13"
         return data
     elif (random7 <= 0.4935):
-        data = "15"
+        data = "14"
         return data
     elif (random7 <= 0.5220):
-        data = "16"
+        data = "15"
         return data
     elif (random7 <= 0.5516):
-        data = "17"
+        data = "16"
         return data
     elif (random7 <= 0.5839):
-        data = "18"
+        data = "17"
         return data
     elif (random7 <= 0.6192):
-        data = "19"
+        data = "18"
         return data
     elif (random7 <= 0.6557):
-        data = "20"
+        data = "19"
         return data
     elif (random7 <= 0.6924):
-        data = "21"
+        data = "20"
         return data
     elif (random7 <= 0.7319):
-        data = "22"
+        data = "21"
         return data
     elif (random7 <= 0.7754):
-        data = "23"
+        data = "22"
         return data
     elif (random7 <= 0.8033):
-        data = "24"
+        data = "23"
         return data
     elif (random7 <= 0.8387):
-        data = "25"
+        data = "24"
         return data
     elif (random7 <= 0.8740):
-        data = "26"
+        data = "25"
         return data
     elif (random7 <= 0.9057):
-        data = "27"
+        data = "26"
         return data
     elif (random7 <= 0.9365):
-        data = "28"
+        data = "27"
         return data
     elif (random7 <= 0.9642):
-        data = "29"
+        data = "28"
         return data
     elif (random7 <= 1.0000):
-        data = "30"
+        data = "29"
         return data
 
 with open('population.csv', 'w') as f:
