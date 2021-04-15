@@ -6,49 +6,122 @@ from random import seed
 import random
 import networkx as nx
 
+
+
+
+
+
+
+
 class Automata(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self):
         pass
     
+
+
+
     def step(self, action):
         pass
+
+
+
 
     def reset(self):
         pass
 
+
+
+
     def render(self, mode='human'):
         pass
+
+
+
 
     def close(self):
         pass
 
+
+
+
+
+
+
+
 class Automaton:
     """All automata begin in an unlocked state"""
 
-    def __init__(self, number, name, x, y, edges):
+    def __init__(self, number, name, x, y, population, capacity):
         self.number = number
         self.name = name
         self.x = x
         self.y = y
         self.coordinates = []
         self.state = 1
-        self.edges = edges
+        self.population = population
+        self.capacity = capacity
         
         for column in range(x):
             self.coordinates.append([])
             for row in range(y):
                 self.coordinates[column].append([])
 
+
+
+
+    def setEdges(self, edges):
+        self.edges = edges
+
+
+
+
+    def addHost(self, host):
+        while True:
+            seed()
+            x_coordinate = random.randrange(0, self.x, 1)
+            seed()
+            y_coordinate = random.randrange(0, self.y, 1)
+
+            if not self.coordinates[x_coordinate][y_coordinate]:
+                self.coordinates[x_coordinate][y_coordinate] = host
+                host.initPosition([x_coordinate, y_coordinate])
+                return
+
+
+
+
     def lock():
         pass
-    
+
+
+
+ 
     def unlock():
         pass
 
-    def moveHost():
+
+
+
+    def notAtCapacity():
+        if (self.population < self.capacity):
+            return True
+        else:
+            return False
+
+
+
+
+    def findEmptyCell():
         pass
+
+
+
+
+
+
+
 
 class Host:
     def __init__(self, age, sex, ethnicity, employment, health, state, home, vertex):
@@ -60,12 +133,41 @@ class Host:
         self.state = state
         self.home = home
         self.vertex = vertex
+        self.counter = 0
+
+
+
 
     def initPosition(self, cell):
         self.cell = cell
 
-    def setVertex(self, ward):
-        self.vertex = ward
+
+
+
+    def setVertex(self, vertex):
+        self.vertex = vertex
+
+
+
+
+#    def setCell(self, automaton):
+#        x = automaton.x
+#        y = automaton.y
+#
+#        while True:
+#            seed()
+#            cell_x = random.randrange(0, x, 1)
+#            seed()
+#            cell_y = random.randrange(0, y, 1)
+#
+#            # check if coordinate is currently empty
+#            if not automaton.coordinates[cell_x][cell_y]:
+#                automaton.coordinates[cell_x][cell_y] = self
+#                self.initPosition([cell_x, cell_y])
+#                break
+
+
+
 
     def getNeighbourhoodMatrix(self, automaton):
         x, y = self.cell
@@ -151,6 +253,9 @@ class Host:
 
         return matrix
 
+
+
+
     def checkNeighbourhood(self, automaton):
         matrix = self.getNeighbourhoodMatrix(automaton)
         available_cells = []
@@ -164,6 +269,9 @@ class Host:
         
         return available_cells
 
+
+
+
     def getNeighbours(self, automaton):
         matrix = self.getNeighbourhoodMatrix(automaton)
         neighbours = []
@@ -176,32 +284,160 @@ class Host:
 
         return neighbours
 
-    def move(self, automaton):
+
+
+
+    def moveCell(self, automaton, available_cells, choices):
         x, y = self.cell
+        # remove host from old cell
+        automaton.coordinates[x][y] = []
+        seed()
+        index = random.randrange(0, choices, 1)
+        new_position = available_cells[index]
+        new_x, new_y = new_position
+        # add host to new cell
+        automaton.coordinates[new_x][new_y] = self
+        self.cell = new_position
+
+
+
+
+    def moveVertex(self, vertices, automaton):
+        available_vertices = []
+
+        for edge in automaton.edges:
+            if vertices[edge].notAtCapacity:
+                available_vertices.append(edge)
+
+        if available_vertices:
+            choices = len(available_vertices)
+            seed()
+            index = random.randrange(0, choices, 1)
+            vertex = available_vertices[index]
+            x, y = self.cell
+            # remove host from old automaton
+            automaton.coordinates[x][y] = []
+            # add host to new automaton
+            vertices[vertex].addHost(self)
+            self.vertex = vertices[vertex].number
+        else:
+            return False
+
+
+
+
+    def moveHome(self, vertices, automaton):
+        x, y = self.cell
+        # remove host from old automaton
+        automaton.coordinates[x][y] = []
+        # add host to home automaton
+        vertices[self.home].addHost(self)
+        self.vertex = self.home
+
+
+
+
+    def move(self, vertices, automaton):
+        self.counter += 1
         available_cells = self.checkNeighbourhood(automaton)
         choices = len(available_cells)
 
-        if not available_cells:
-            return
-        else:
+        # every 1000 steps, allow host to go home
+        if self.counter % 1000 == 0:
+            # host is not home
+            if self.vertex != self.home:
+                seed()
+                # 50:50 odds of returning home
+                send_home = random.randrange(0, 2, 1)
+                if send_home:
+                    if automaton.notAtCapacity:
+                        self.moveHome(vertices, automaton)
+                        return True
+                    else:
+                        if available_cells:
+                            self.moveCell(automaton, available_cells, choices)
+                            return True
+                        else:
+                            return False
+            # host is home
+            else:
+                if available_cells:
+                    self.moveCell(automaton, available_cells, choices)
+                    return True
+                else:
+                    return False
+
+        # every 100 steps, allow travel to another vertex
+        elif (self.counter % 100 == 0):
             seed()
-            index = random.randrange(0, choices, 1)
-            new_position = available_cells[index]
-            new_x, new_y = new_position
-            automaton.coordinates[x][y] = []
-            automaton.coordinates[new_x][new_y] = self
-            self.cell = new_position
+            change_vertex = random.randrange(0, 2, 1)
+            if change_vertex:
+                if self.moveVertex(vertices, automaton):
+                    return True
+                else:
+                    return False
+            else:
+                if available_cells:
+                    self.moveCell(automaton, available_cells, choices)
+                    return True
+                else:
+                    return False
+
+        # move within current vertex
+        else:
+            if available_cells:
+                self.moveCell(automaton, available_cells, choices)
+                return True
+            else:
+                return False
+
+
+
 
     def changeState():
         pass
 
+
+
+
     def infect():
         pass
 
-G = nx.Graph()
 
-# define edges between vertices
-elist = [(11,25), (11,17), (11,9), (25,19), (17,9), (7,25), (7,6), (6,17), 
+
+
+
+
+
+
+# load environment data
+df_env = pd.read_csv('../../../data/environment.csv')
+
+vertices = []
+
+# instantiate automaton objects
+for index, data in df_env.iterrows():
+    x = data['x']
+    y = data['y']
+    capacity = (x * y) / 2
+    vertices.append(Automaton(data['number'], data['name'], x, y, data['population'], capacity))
+
+
+
+
+
+
+
+
+# instantiate graph
+graph = nx.Graph()
+
+# add automaton objects as vertices to graph
+#for index, vertex in enumerate(vertices):
+#    graph.add_node(index, automaton=vertex)
+
+# define edges between nodes
+edges = [(11,25), (11,17), (11,9), (25,19), (17,9), (7,25), (7,6), (6,17), 
          (6,25), (17,9), (14,7), (14,1), (1,7), (1,6), (27,6), (27,17), (27,9), 
          (27,29), (29,9), (10,14), (10,1), (10,24), (24,1), (24,6), (24,27), 
          (24,15), (3,14), (3,10), (3,13), (3,19), (13,10), (13,1), (13,24), 
@@ -211,45 +447,54 @@ elist = [(11,25), (11,17), (11,9), (25,19), (17,9), (7,25), (7,6), (6,17),
          (12,5), (5,26), (5,4), (5,28), (28,4), (28,2), (16,12), (16,5), (16,8), 
          (8,5), (8,0), (8,22), (0,5), (0,28), (22,0)]
 
-G.add_edges_from(elist)
+graph.add_edges_from(edges)
 
-df_env = pd.read_csv('../../../data/environment.csv')
+# add edge indexes to automaton member
+for index, vertex in enumerate(vertices):
+    vertex.setEdges(list(graph.adj[index]))
 
-vertices = []
 
-# instantiate automaton objects and add to list
-for index, data in df_env.iterrows():
-    vertices.append(Automaton(data['number'], data['name'], data['x'], data['y'], G.edges(index)))
 
+
+
+
+
+
+# load population data
 df_pop = pd.read_csv('../../../data/population.csv')
 
 hosts = []
 
-# instantiate host objects and add to list
+# instantiate host objects
 for index, data in df_pop.iterrows():
     hosts.append(Host(data['age'], data['sex'], data['ethnicity'], data['employment'], data['health'], data['state'], data['ward'], data['ward']))
 
+vertices[0].addHost(hosts[0])
+
 # insert all hosts into random cells of their given automata
 for host in hosts:
-    my_ward = host.vertex
-    x = vertices[my_ward].x
-    y = vertices[my_ward].y
+    vertices[host.home].addHost(host)
 
-    while True:
-        seed()
-        cell_x = random.randrange(0, x, 1)
-        seed()
-        cell_y = random.randrange(0, y, 1)
 
-        # check if coordinate is currently empty
-        if not vertices[my_ward].coordinates[cell_x][cell_y]:
-            vertices[my_ward].coordinates[cell_x][cell_y] = host
-            host.initPosition([cell_x, cell_y])
-            break
 
-for x in range(1000):
+
+
+
+
+
+# start simulation
+for x in range(14400):
     for host in hosts:
-        host.move(vertices[host.vertex])
-    print("time step: " + str(x))
+        host_moved = host.move(vertices, vertices[host.vertex])
+        if host_moved:
+#            if host.state == 'I':
+#                host.infect()
+    hosts[0].move(vertices, vertices[hosts[0].vertex])
+ 
 
-print("done")
+
+
+
+
+
+
