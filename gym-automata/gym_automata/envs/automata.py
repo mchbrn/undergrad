@@ -150,25 +150,6 @@ class Host:
 
 
 
-#    def setCell(self, automaton):
-#        x = automaton.x
-#        y = automaton.y
-#
-#        while True:
-#            seed()
-#            cell_x = random.randrange(0, x, 1)
-#            seed()
-#            cell_y = random.randrange(0, y, 1)
-#
-#            # check if coordinate is currently empty
-#            if not automaton.coordinates[cell_x][cell_y]:
-#                automaton.coordinates[cell_x][cell_y] = self
-#                self.initPosition([cell_x, cell_y])
-#                break
-
-
-
-
     def getNeighbourhoodMatrix(self, automaton):
         x, y = self.cell
         matrix = []
