@@ -232,6 +232,11 @@ class Host:
                 for row in range(y - 1, y + 2, 1):
                     matrix.append([column, row])
 
+        # don't include self in neighbourhood
+        for cell in matrix:
+            if cell == self:
+                matrix.pop(cell)
+
         return matrix
 
 
@@ -301,6 +306,7 @@ class Host:
             # add host to new automaton
             vertices[vertex].addHost(self)
             self.vertex = vertices[vertex].number
+            return True
         else:
             return False
 
@@ -375,14 +381,19 @@ class Host:
 
 
 
-    def changeState():
-        pass
+    def changeState(host, newState):
+        if newState == "I"
+            host.state = newState
 
 
 
-
-    def infect():
-        pass
+    def infect(self, automaton):
+        neighbours = self.getNeighbours(automaton)
+        for neighbour in neighbours:
+            seed()
+            infect = random.randint(0, 100)
+            if infect > 80:
+                neighbour.changeState(neighbour, "I")
 
 
 
@@ -462,16 +473,17 @@ for host in hosts:
 
 
 
-
 # start simulation
-for x in range(14400):
-    for host in hosts:
-        host_moved = host.move(vertices, vertices[host.vertex])
-        if host_moved:
+#for x in range(140):
+#    for host in hosts:
+#        host_moved = host.move(vertices, vertices[host.vertex])
+#        if host_moved:
 #            if host.state == 'I':
-#                host.infect()
-    hosts[0].move(vertices, vertices[hosts[0].vertex])
- 
+#                host.infect(vertices[host.vertex])
+#    host_moved = hosts[0].move(vertices, vertices[host.vertex])
+#    if host_moved:
+#        host.infect(vertices[host.vertex])
+
 
 
 

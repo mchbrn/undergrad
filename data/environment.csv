@@ -1,31 +1,26 @@
 number,name,x,y,population
-0,"Allerton and Hunts Cross",250,266,1470
-1,"Anfield",125,183,1439
-2,"Belle Vale",200,237,1542
-3,"Central",174,200,2013
-4,"Childwall",142,200,1357
-5,"Church",175,184,1434
-6,"Clubmoor",150,180,1537
-7,"County",125,153,1395
-8,"Cressington",151,200,1421
-9,"Croxteth",200,224,1439
-10,"Everton",180,200,1446
-11,"Fazakerley",226,250,1684
-12,"Greenbank",140,160,1620
-13,"Kensington and Fairfield",155,200,1578
-14,"Kirkdale",238,250,1640
-15,"Knotty Ash",174,188,1266
-16,"Mossley Hill",197,200,1428
-17,"Norris Green",156,200,1499
-18,"Old Swan",150,170,1643
-19,"Picton",142,150,1634
-20,"Princes Park",125,188,1753
-21,"Riverside",199,200,1808
-22,"Speke-Garston",343,360,2031
-23,"St Michaels",150,174,1293
-24,"Tuebrook and Stoneycroft",145,160,1604
-25,"Warbeck",160,190,1701
-26,"Wavertree",152,188,1539
-27,"West Derby",188,192,1468
-28,"Woolton",191,200,1317
-29,"Yew Tree",200,208,1643
+0,"Belfast",750,1220,21349
+1,"Derry",170,200,6338
+2,"Newtownabbey",188,150,5003
+3,"Craigavon",145,260,4902
+4,"Bangor",112,175,4650
+5,"Lisburn",130,150,3458
+6,"Ballymena",100,166,2252
+7,"Newtownards",100,113,2138
+8,"Carrickfergus",100,122,2134
+9,"Newry",100,141,2055
+10,"Coleraine",100,124,1877
+11,"Antrim",100,131,1781
+12,"Omagh",100,164,1498
+13,"Larne",96,96,1640
+14,"Banbridge",50,139,1268
+15,"Armagh",100,103,1126
+16,"Dungannon",90,107,1093
+17,"Enniskillen",100,129,1053
+18,"Strabane",66,89,1004
+19,"Limavady",60,76,917
+20,"Cookstown",70,101,884
+21,"Holywood",76,83,858
+22,"Downpatrick",74,90,825
+23,"Ballymoney",62,81,793
+24,"Ballyclare",66,75,759

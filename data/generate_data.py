@@ -2,26 +2,50 @@ from random import seed
 from random import random
 
 def age(random1):
-    # 0 - 15
-    if (random1 <= 0.167):
+    # 18 - 19
+    if (random1 <= 0.05149):
         data = "0,"
         return data
-    # 16 - 44
-    elif (random1 <= 0.621):
+    # 20 - 24
+    elif (random1 <= 0.14488):
         data = "1,"
         return data
-    # 45 - 64
-    elif (random1 <= 0.859):
+    # 25 - 29
+    elif (random1 <= 0.23717):
         data = "2,"
         return data
-    # 65 - ∞
-    elif (random1 <= 1.0):
+    # 30 - 44
+    elif (random1 <= 0.46746):
         data = "3,"
+        return data
+    # 45 - 59
+    elif (random1 <= 0.68335):
+        data = "4,"
+        return data
+    # 60 - 64
+    elif (random1 <= 0.75924):
+        data = "5,"
+        return data
+    # 65 - 74
+    elif (random1 <= 0.87343):
+        data = "6,"
+        return data
+    # 75 - 84
+    elif (random1 <= 0.94512):
+        data = "7,"
+        return data
+    # 85 - 89
+    elif (random1 <= 0.98061):
+        data = "8,"
+        return data
+    # 90 - ∞
+    elif (random1 <= 1.0):
+        data = "9,"
         return data
 
 def sex(random2):
     # Male
-    if (random2 <= 0.494):
+    if (random2 <= 0.49):
         data = "m,"
         return data
     # Female
@@ -31,174 +55,160 @@ def sex(random2):
 
 def ethnicity(random3):
     # White
-    if (random3 <= 0.889):
+    if (random3 <= 0.9828):
         data = "we,"
         return data
-    # Mixed
-    elif (random3 <= 0.914):
-        data = "md,"
-        return data
     # Asian
-    elif (random3 <= 0.956):
+    elif (random3 <= 0.9934):
         data = "an,"
         return data
-    # Black
-    elif (random3 <= 0.982):
+    # Asian
+    elif (random3 <= 0.9954):
         data = "bk,"
         return data
-    # Arab
-    elif (random3 <= 0.994):
-        data = "ab,"
+    # Black
+    elif (random3 <= 0.9987):
+        data = "md,"
         return data
     # Other
     elif (random3 <= 1.0):
         data = "or,"
         return data
 
-def employment(random4, sex):
-    if (sex == "m,"):
-        # Economically active
-        if (random4 <= 0.665):
-            data = "1,"
-            return data
-        # Economically inactive
-        elif (random4 <= 1.0):
-            data = "0,"
-            return data
-    elif (sex == "f,"):
-        # Economically active
-        if (random4 <= 0.604):
-            data = "1,"
-            return data
-        # Economically inactive
-        elif (random4 <= 1.0):
-            data = "0,"
-            return data
-
-def health(random5):
+def health(random4):
     # Very good health
-    if (random5 <= 0.467):
+    if (random4 <= 0.4772):
         data = "4,"
         return data
     # Good health
-    elif (random5 <= 0.772):
+    elif (random4 <= 0.7951):
         data = "3,"
         return data
     # Fair health
-    elif (random5 <= 0.912):
+    elif (random4 <= 0.9436):
         data = "2,"
         return data
     # Bad health
-    elif (random5 <= 0.979):
+    elif (random4 <= 0.9881):
         data = "1,"
         return data
     # Very bad health
-    elif (random5 <= 1.0):
+    elif (random4 <= 1.0):
         data = "0,"
         return data
 
-def state(random6):
-    if (random6 <= 0.01):
+def state(random5):
+    if (random5 <= 0.01):
         data = "I,"
         return data
-    elif (random6 <= 1.00):
+    elif (random5 <= 1.00):
         data = "S,"
         return data
 
-def ward(random7):
-    if (random7 <= 0.0318):
+def town(random6):
+    # belfast
+    if (random6 <= 0.3383):
         data = "0"
         return data
-    elif (random7 <= 0.0629):
+    # derry
+    elif (random6 <= 0.4220):
         data = "1"
         return data
-    elif (random7 <= 0.0951):
+    # newtownabbey
+    elif (random6 <= 0.4881):
         data = "2"
         return data
-    elif (random7 <= 0.1387):
+    # cragiavon
+    elif (random6 <= 0.5528):
         data = "3"
         return data
-    elif (random7 <= 0.1685):
+    # bangor
+    elif (random6 <= 0.6142):
         data = "4"
         return data
-    elif (random7 <= 0.1985):
+    # lisburn
+    elif (random6 <= 0.6599):
         data = "5"
         return data
-    elif (random7 <= 0.2312):
+    # ballymena
+    elif (random6 <= 0.6897):
         data = "6"
         return data
-    elif (random7 <= 0.2613):
+    # newtownards
+    elif (random6 <= 0.7179):
         data = "7"
         return data
-    elif (random7 <= 0.2924):
+    # carrickfergus
+    elif (random6 <= 0.7461):
         data = "8"
         return data
-    elif (random7 <= 0.3236):
+    # newry
+    elif (random6 <= 0.7733):
         data = "9"
         return data
-    elif (random7 <= 0.3553):
+    # coleraine
+    elif (random6 <= 0.7980):
         data = "10"
         return data
-    elif (random7 <= 0.3913):
+    # antrim
+    elif (random6 <= 0.8216):
         data = "11"
         return data
-    elif (random7 <= 0.4259):
+    # omagh
+    elif (random6 <= 0.8414):
         data = "12"
         return data
-    elif (random7 <= 0.4589):
+    # larne
+    elif (random6 <= 0.8602):
         data = "13"
         return data
-    elif (random7 <= 0.4935):
+    # banbridge
+    elif (random6 <= 0.8770):
         data = "14"
         return data
-    elif (random7 <= 0.5220):
+    # armagh
+    elif (random6 <= 0.8919):
         data = "15"
         return data
-    elif (random7 <= 0.5516):
+    # dungannon
+    elif (random6 <= 0.9063):
         data = "16"
         return data
-    elif (random7 <= 0.5839):
+    # enniskillen
+    elif (random6 <= 0.9202):
         data = "17"
         return data
-    elif (random7 <= 0.6192):
+    # strabane
+    elif (random6 <= 0.9335):
         data = "18"
         return data
-    elif (random7 <= 0.6557):
+    # limavady
+    elif (random6 <= 0.9456):
         data = "19"
         return data
-    elif (random7 <= 0.6924):
+    # cookstown
+    elif (random6 <= 0.9573):
         data = "20"
         return data
-    elif (random7 <= 0.7319):
+    # holywood
+    elif (random6 <= 0.9686):
         data = "21"
         return data
-    elif (random7 <= 0.7754):
+    # downpatrick
+    elif (random6 <= 0.9795):
         data = "22"
         return data
-    elif (random7 <= 0.8033):
+    # ballymoney
+    elif (random6 <= 0.9900):
         data = "23"
         return data
-    elif (random7 <= 0.8387):
+    # ballyclare
+    elif (random6 <= 1.0000):
         data = "24"
-        return data
-    elif (random7 <= 0.8740):
-        data = "25"
-        return data
-    elif (random7 <= 0.9057):
-        data = "26"
-        return data
-    elif (random7 <= 0.9365):
-        data = "27"
-        return data
-    elif (random7 <= 0.9642):
-        data = "28"
-        return data
-    elif (random7 <= 1.0000):
-        data = "29"
         return data
 
 with open('population.csv', 'w') as f:
-    for i in range(46642):
+    for i in range(75701):
         data = ""
 
         seed()
@@ -219,22 +229,17 @@ with open('population.csv', 'w') as f:
         seed()
         random4 = random()
 
-        my_employment = employment(random4, my_sex)
+        my_health = health(random4)
 
         seed()
         random5 = random()
 
-        my_health = health(random5)
+        my_state = state(random5)
 
         seed()
         random6 = random()
 
-        my_state = state(random6)
+        my_town = town(random6)
 
-        seed()
-        random7 = random()
-
-        my_ward = ward(random7)
-
-        data += my_age + my_sex + my_ethnicity + my_employment + my_health + my_state + my_ward + "\n"
+        data += my_age + my_sex + my_ethnicity + my_health + my_state + my_town + "\n"
         f.write(data)

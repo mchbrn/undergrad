@@ -1,15 +1,19 @@
-x = 10
-y = 5
+class Container:
+    def __init__(self, size):
+        self.size = size
 
-coordinates = []
+    def storeItem(self, item):
+        self.storage = []
+        self.storage.append(item)
 
-for row in range(x):
-    print(row)
-    coordinates.append([])
-    for column in range(y):
-        coordinates[row].append([])
+class Item:
+    def __init__(self, name):
+        self.name = name
 
-cellx, celly = 0, 0
-coordinates[0][1] = "hello"
-coordinates[cellx + 5][celly + 1] = "goodbye"
-print(coordinates)
+box = Container(10)
+orange = Item("Orange")
+
+box.storeItem(orange)
+
+print("Orange object hash is    " + str(orange))
+print("Item stored box hash is " + str(box.storage))
