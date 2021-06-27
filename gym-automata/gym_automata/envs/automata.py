@@ -124,11 +124,10 @@ class Automaton:
 
 
 class Host:
-    def __init__(self, age, sex, ethnicity, employment, health, state, home, vertex):
+    def __init__(self, age, sex, ethnicity, health, state, home, vertex):
         self.age = age
         self.sex = sex
         self.ethnicity = ethnicity
-        self.employment = employment
         self.health = health
         self.state = state
         self.home = home
@@ -382,7 +381,7 @@ class Host:
 
 
     def changeState(host, newState):
-        if newState == "I"
+        if newState == "I":
             host.state = newState
 
 
@@ -411,7 +410,7 @@ vertices = []
 for index, data in df_env.iterrows():
     x = data['x']
     y = data['y']
-    capacity = (x * y) / 2
+    capacity = (x * y) / 3
     vertices.append(Automaton(data['number'], data['name'], x, y, data['population'], capacity))
 
 
@@ -424,20 +423,26 @@ for index, data in df_env.iterrows():
 # instantiate graph
 graph = nx.Graph()
 
-# add automaton objects as vertices to graph
-#for index, vertex in enumerate(vertices):
-#    graph.add_node(index, automaton=vertex)
+# define edges between vertices
+edges = [(0,2), (0,5), (0,7), (0,11), (0,21),
+         (1,18), (1,19),
+         (2,8), (2,11), (2,24),
+         (3,5), (3,9), (3,14), (3,15), (3,16),
+         (4,7), (4,21),
+         (5,11), (5,14),
+         (6,11), (6,13), (6,23), (6,24),
+         (7,21), (7,22),
+         (8,13), (8,24),
+         (9,14), (9,15),
+         (10,19), (10,20), (10,23),
+         (11,20),
+         (12,17), (12,18), (12,20),
+         (13,24),
+         (15,16),
+         (16,17), (16,20)]
 
-# define edges between nodes
-edges = [(11,25), (11,17), (11,9), (25,19), (17,9), (7,25), (7,6), (6,17), 
-         (6,25), (17,9), (14,7), (14,1), (1,7), (1,6), (27,6), (27,17), (27,9), 
-         (27,29), (29,9), (10,14), (10,1), (10,24), (24,1), (24,6), (24,27), 
-         (24,15), (3,14), (3,10), (3,13), (3,19), (13,10), (13,1), (13,24), 
-         (13,18), (18,24), (18,15), (15,27), (15,29), (21,3), (21,20), (20,3), 
-         (20,19), (20,12), (19,13), (19,18), (19,26), (26,18), (26,4), (4,18), 
-         (4,15), (4,2), (23,21), (23,20), (23,12), (23,16), (12,19), (12,26), 
-         (12,5), (5,26), (5,4), (5,28), (28,4), (28,2), (16,12), (16,5), (16,8), 
-         (8,5), (8,0), (8,22), (0,5), (0,28), (22,0)]
+
+
 
 graph.add_edges_from(edges)
 
@@ -459,7 +464,7 @@ hosts = []
 
 # instantiate host objects
 for index, data in df_pop.iterrows():
-    hosts.append(Host(data['age'], data['sex'], data['ethnicity'], data['employment'], data['health'], data['state'], data['ward'], data['ward']))
+    hosts.append(Host(data['age'], data['sex'], data['ethnicity'], data['health'], data['state'], data['town'], data['town']))
 
 vertices[0].addHost(hosts[0])
 
@@ -474,7 +479,8 @@ for host in hosts:
 
 
 # start simulation
-#for x in range(140):
+for x in range(381600):
+    hosts[0].move(vertices, vertices[host.vertex])
 #    for host in hosts:
 #        host_moved = host.move(vertices, vertices[host.vertex])
 #        if host_moved:
@@ -483,6 +489,8 @@ for host in hosts:
 #    host_moved = hosts[0].move(vertices, vertices[host.vertex])
 #    if host_moved:
 #        host.infect(vertices[host.vertex])
+    print("vertex: " + hosts[0].vertex)
+    print("position: " + hosts[0].cell)
 
 
 
