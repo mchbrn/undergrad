@@ -98,118 +98,60 @@ def health(random4):
         return data
 
 def state(random5):
+    # infectious
     if (random5 <= 0.01):
-        data = "I,"
+        data = "2,"
         return data
+    # susceptible
     elif (random5 <= 1.00):
-        data = "S,"
+        data = "0,"
         return data
 
 def town(random6):
     # belfast
-    if (random6 <= 0.3383):
+    if (random6 <= 0.4286):
         data = "0"
         return data
     # derry
-    elif (random6 <= 0.4220):
+    elif (random6 <= 0.5365):
         data = "1"
         return data
-    # newtownabbey
-    elif (random6 <= 0.4881):
+    # cragiavon
+    elif (random6 <= 0.6262):
         data = "2"
         return data
-    # cragiavon
-    elif (random6 <= 0.5528):
+    # newtownabbey
+    elif (random6 <= 0.7110):
         data = "3"
         return data
     # bangor
-    elif (random6 <= 0.6142):
+    elif (random6 <= 0.7907):
         data = "4"
         return data
     # lisburn
-    elif (random6 <= 0.6599):
+    elif (random6 <= 0.8538):
         data = "5"
         return data
     # ballymena
-    elif (random6 <= 0.6897):
+    elif (random6 <= 0.8937):
         data = "6"
         return data
     # newtownards
-    elif (random6 <= 0.7179):
+    elif (random6 <= 0.9302):
         data = "7"
         return data
-    # carrickfergus
-    elif (random6 <= 0.7461):
+    # newry
+    elif (random6 <= 0.9651):
         data = "8"
         return data
-    # newry
-    elif (random6 <= 0.7733):
-        data = "9"
-        return data
-    # coleraine
-    elif (random6 <= 0.7980):
-        data = "10"
-        return data
-    # antrim
-    elif (random6 <= 0.8216):
-        data = "11"
-        return data
-    # omagh
-    elif (random6 <= 0.8414):
-        data = "12"
-        return data
-    # larne
-    elif (random6 <= 0.8602):
-        data = "13"
-        return data
-    # banbridge
-    elif (random6 <= 0.8770):
-        data = "14"
-        return data
-    # armagh
-    elif (random6 <= 0.8919):
-        data = "15"
-        return data
-    # dungannon
-    elif (random6 <= 0.9063):
-        data = "16"
-        return data
-    # enniskillen
-    elif (random6 <= 0.9202):
-        data = "17"
-        return data
-    # strabane
-    elif (random6 <= 0.9335):
-        data = "18"
-        return data
-    # limavady
-    elif (random6 <= 0.9456):
-        data = "19"
-        return data
-    # cookstown
-    elif (random6 <= 0.9573):
-        data = "20"
-        return data
-    # holywood
-    elif (random6 <= 0.9686):
-        data = "21"
-        return data
-    # downpatrick
-    elif (random6 <= 0.9795):
-        data = "22"
-        return data
-    # ballymoney
-    elif (random6 <= 0.9900):
-        data = "23"
-        return data
-    # ballyclare
+    # carrickfergus
     elif (random6 <= 1.0000):
-        data = "24"
+        data = "9"
         return data
 
 with open('population.csv', 'w') as f:
-    for i in range(75701):
-        data = ""
+    for i in range(602):
+        data = str(i) + ","
 
         seed()
         random1 = random()
