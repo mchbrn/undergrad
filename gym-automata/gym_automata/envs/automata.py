@@ -13,6 +13,8 @@ class Automata:
         self.hosts_number_of = hosts_number_of
         self.automata = np.zeros((automata_number_of), dtype=object)
         self.locations = np.zeros((hosts_number_of,3), dtype='uint16')
+        # initial susceptible and infected hosts
+        self.report_initial = [{0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}, {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}]
 
         graph = nx.Graph()
 
@@ -28,7 +30,7 @@ class Automata:
         graph.add_edges_from(graph_edges)
 
         # load environment data
-        df_env = pd.read_csv('../../../../data/environment.csv')
+        df_env = pd.read_csv('../../../data/environment.csv')
 
         # instantiate automaton objects
         for index, data in df_env.iterrows():
@@ -45,7 +47,7 @@ class Automata:
         print("\n")
 
         # load population data
-        df_pop = pd.read_csv('../../../../data/population.csv')
+        df_pop = pd.read_csv('../../../data/population.csv')
 
         # instantiate host objects
         for index, data in df_pop.iterrows():
@@ -63,6 +65,10 @@ class Automata:
             self.locations[number][0] = location[0]
             self.locations[number][1] = location[1]
             self.locations[number][2] = town
+            if state == 0:
+                self.report_initial[0][town] += 1
+            elif state == 2:
+                self.report_initial[1][town] += 1
             update = "\rBuilding hosts: " + str(number)
             print(update, end="")
 

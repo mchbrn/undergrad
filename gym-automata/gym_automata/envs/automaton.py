@@ -80,7 +80,7 @@ class Automaton:
             host_state = host.getState()
             if host_state == 0:
                 infection = host.infect()
-                if infection_data:
+                if infection:
                     infection.append(self.number)
                     infections.append(infection)
         return infections

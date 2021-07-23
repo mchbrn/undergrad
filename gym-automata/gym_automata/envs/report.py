@@ -20,7 +20,7 @@ class Report():
         self.weekly_cases_symptomatic = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}
         self.weekly_cases_asymptomatic = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}
         for hosts_asymptomatic in cases_asymptomatic:
-            self.weekly_asymptomatic[hosts_asymptomatic] = cases_asymptomatic[hosts_asymptomatic]
+            self.weekly_cases_asymptomatic[hosts_asymptomatic] = cases_asymptomatic[hosts_asymptomatic]
         self.weekly_self_isolating = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}
         self.weekly_recovered = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}
         self.weekly_deaths = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}
@@ -31,9 +31,9 @@ class Report():
             self.susceptible[automaton] += self.weekly_susceptible[automaton]
             self.exposed[automaton] += self.weekly_exposed[automaton]
             self.cases[automaton] += self.weekly_cases[automaton]
-            self.cases_symptomatic[automaton] += self.weekly_symptomatic[automaton]
-            self.cases_asymptomatic[automaton] += self.weekly_asymptomatic[automaton]
-            self.self_isolating[automaton] += self.weekly_isolating[automaton]
+            self.cases_symptomatic[automaton] += self.weekly_cases_symptomatic[automaton]
+            self.cases_asymptomatic[automaton] += self.weekly_cases_asymptomatic[automaton]
+            self.self_isolating[automaton] += self.weekly_self_isolating[automaton]
             self.recovered[automaton] += self.weekly_recovered[automaton]
             self.deaths[automaton] += self.weekly_deaths[automaton]
             if self.weekly_lockdowns[automaton] == True:

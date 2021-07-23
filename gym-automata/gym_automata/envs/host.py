@@ -9,13 +9,13 @@ class Host:
         self.ethnicity = ethnicity
         self.health = health
         self.state = state
-        if self.state = 2:
-            # none, asymptomatic, presymptomatic and symptomatic
-            self.symptoms = "asymptomatic"
-            self.infectious = True
-        else:
+        # symptoms = [None, 'asymptomatic', 'presymptomatic' and 'symptomatic']
+        if self.state == 0:
             self.symptoms = None
             self.infectious = False
+        elif self.state == 2:
+            self.symptoms = "asymptomatic"
+            self.infectious = True
         self.home = home
         # how many days since last state change
         self.counter = 0 
