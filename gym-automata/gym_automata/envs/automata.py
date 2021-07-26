@@ -96,3 +96,8 @@ class Automata:
         self.locations[host_number][1] = y
         self.locations[host_number][2] = automaton_number
 
+    def removeHost(self, host_number):
+        x, y, automaton = self.getLocations(host_number)
+        self.locations.pop(host_number)
+        self.automata[automaton].coordinates[x][y] = 0
+

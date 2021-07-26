@@ -74,6 +74,7 @@ class Simulation:
                             # remove host from simulation
                             if chance_of_death > host_threshold:
                                 report.setDeath(host_attributes, automaton_number_current)
+                                self.simulation.removeHost(host_number)
                         # early asymptomatic -> recovered
                         else:
                             seed()
