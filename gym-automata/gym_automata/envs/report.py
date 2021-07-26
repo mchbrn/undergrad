@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import pandas as pd
 
 class Report():
-    def __init__(self, susceptible, cases_asymptomatic):
+    def __init__(self):
         # grand totals
         self.susceptible_age = pd.DataFrame({0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}, index[0])
         self.susceptible_sex = pd.DataFrame({'m': 0, 'f': 0}, index=[0])
@@ -100,6 +100,21 @@ class Report():
         self.weekly_locdowns_ethnicity = pd.DataFrame({'we': 0, 'an': 0, 'bk': 0, 'md': 0, 'or': 0}, index[0])
         self.weekly_lockdowns_health = pd.DataFrame({0: 0, 1: 0, 2: 0, 3: 0, 4: 0}, index=[0])
         self.weekly_lockdowns_automaton = pd.DataFrame({0: False, 1: False, 2: False, 3: False, 4: False, 5: False, 6: False, 7: False, 8: False, 9: False}, index[0])
+
+    def initialise(self, susceptible, cases_asymptomatic):
+        for attribute in susceptible:
+            self.weekly_susceptible_age[attribute[0]] += 1
+            self.weekly_susceptible_sex[attribute[1]] += 1
+            self.weekly_susceptible_ethnicity[attribute[2]] += 1
+            self.weekly_susceptible_health[attribute[3]] += 1
+            self.weekly_susceptible_automaton[attribute[4]] += 1
+
+        for attribute in cases_asymptomatic:
+            self.weekly_cases_asymptomatic_age[attribute[0]] += 1
+            self.weekly_cases_asymptomatic_sex[attribute[1]] += 1
+            self.weekly_cases_asymptomatic_ethnicity[attribute[2]] += 1
+            self.weekly_cases_asymptomatic_health[attribute[3]] += 1
+            self.weekly_cases_asymptomatic_automaton[attribute[4]] += 1
 
     def newWeek(self):
         for age in range(10):

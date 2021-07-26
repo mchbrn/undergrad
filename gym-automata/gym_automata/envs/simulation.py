@@ -15,7 +15,8 @@ class Simulation:
     def __init__(self, automata_number_of, hosts_number_of):
         self.simulation = Automata(automata_number_of, hosts_number_of)
         susceptible, cases_asymptomatic = self.simulation.report_initial
-        self.report = Report(susceptible, cases_asymptomatic)
+        self.report = Report()
+        self.report.initialise(susceptible, cases_asymptomatic)
         self.automata_number_of = automata_number_of
         self.hosts_number_of = hosts_number_of
         self.counter = 1
@@ -35,11 +36,12 @@ class Simulation:
                 for k in range(self.simulation.hosts_number_of):
                     x_current, y_current, automaton_number_current = self.simulation.getLocations(k)
                     host = self.simulation.automata[automaton_number_current].getHost(x_current, y_current)
-                    host_home = host.getHome()
-                    host_state = host.getState()
+                    host_home = host.home
+                    host_state = host.state
                     host_symptomatic = host.symptomatic
-                    host_counter = host.getCounter()
+                    host_counter = host.counter
                     host_threshold = host.threshold
+                    host_attributes = host.getAttributes()
                     host_is_home = host_home == automaton_number_current
                     seed()
                     probability_change_automaton = random()
@@ -55,32 +57,33 @@ class Simulation:
 
                         if chance_of_symptoms > host_threshold:
                             host.symptomatic = True
-                            report.setCase(automaton_number_current, True)
+                            report.setCaseSymptomatic(host_attributes, automaton_number_current)
                         else
                             host.symptomatic = False
-                            report.setCase(automaton_number_current, False)
+                            report.setCaseAsymptomatic(host_attributes, automaton_number_current)
                     # infected -> recovered/removed
                     elif host_state == 2 and host_counter > 4:
                         # host has recovered after 3 weeks
                         if host_counter == 21:
                             host.setState()
-                            report.setRecovery(automaton_number_current)
+                            report.setRecovery(host_attributes, automaton_number_current)
                         elif host_symptomatic:
                             seed()
                             chance_of_death = random()
 
                             # remove host from simulation
                             if chance_of_death > host_threshold:
-                                pass
+                                report.setDeath(host_attributes, automaton_number_current)
                         # early asymptomatic -> recovered
                         else:
                             seed()
                             chance_of_recovery = random()
 
                             if chance_of_recovery > 0.8:
-                                pass
+                                report.setRecovery(host_attributes, automaton_number_current)
                     elif host_state == 3 and host_counter <= 84:
-                        pass
+                        host.setState()
+                        report.setSusceptible(host_attributes, automaton_number_current)
 
                     # send host home if away
                     if host_is_home == False and probability_change_automaton > 0.5:

@@ -49,6 +49,9 @@ class Automata:
         # load population data
         df_pop = pd.read_csv('../../../data/population.csv')
 
+        initial_susceptible = []
+        initial_asymptomatic = []
+
         # instantiate host objects
         for index, data in df_pop.iterrows():
             number = int(data['number'])
@@ -66,11 +69,16 @@ class Automata:
             self.locations[number][1] = location[1]
             self.locations[number][2] = town
             if state == 0:
-                self.report_initial[0][town] += 1
+                attributes = [age, sex, ethnicity, health, town]
+                initial_susceptible.append(attributes)
             elif state == 2:
-                self.report_initial[1][town] += 1
+                attributes = [age, sex, ethnicity, health, town]
+                initial_asymptomatic.append(attributes)
             update = "\rBuilding hosts: " + str(number)
             print(update, end="")
+
+        self.report_initial.append(initial_susceptible)
+        self.report_initial.append(initial_asymptomatic)
 
     # move host to new automaton
     def changeAutomaton(self, host, automaton_number):

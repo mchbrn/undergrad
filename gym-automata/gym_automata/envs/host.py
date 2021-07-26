@@ -19,11 +19,12 @@ class Host:
         attributes = [self.age, self.sex, self.ethnicity, self.health, self.home]
         return attributes
 
-    def getState(self):
-        return self.state
-
     def setState(self):
-        self.state += 1
+        if self.state == 3:
+            self.state = 0
+        else:
+            self.state += 1
+
         self.counter = 0
 
     def setThreshold(self):
@@ -31,31 +32,31 @@ class Host:
 
         # 18 - 19
         if self.age == 0:
-            threshold -= 0.00
+            threshold -= 0.01
         # 20 - 24
         elif self.age == 1:
-            threshold -= 0.05
+            threshold -= 0.02
         # 25 - 29
         elif self.age == 2:
-            threshold -= 0.10
+            threshold -= 0.03
         # 30 - 44
         elif self.age == 3:
-            threshold -= 0.15
+            threshold -= 0.04
         # 45 - 59
         elif self.age == 4:
-            threshold -= 0.20
+            threshold -= 0.06
         # 60 - 64
         elif self.age == 5:
-            threshold -= 0.25
+            threshold -= 0.09
         # 65 - 74
         elif self.age == 6:
-            threshold -= 0.30
+            threshold -= 0.14
         # 75 - 84
         elif self.age == 7:
-            threshold -= 0.35
+            threshold -= 0.21
         # 85 - 89
         elif self.age == 8:
-            threshold -= 0.40
+            threshold -= 0.30
         # 90 - ∞
         elif self.age == 9:
             threshold -= 0.45
@@ -85,27 +86,24 @@ class Host:
 
         # very good health
         if self.health == 0:
-            threshold -= 0.0000
+            threshold -= 0.00
         # good health
         elif self.health == 1:
-            threshold -= 0.1125
+            threshold -= 0.02
         # fair health
         elif self.health == 2:
-            threshold -= 0.2250
+            threshold -= 0.06
         # bad health
         elif self.health == 3:
-            threshold -= 0.3375
+            threshold -= 0.17
         # very bad health
         elif self.health == 4:
-            threshold -= 0.4500
+            threshold -= 0.45
 
         return threshold
         
     def setCounter(self):
         self.counter += 1
-
-    def getHome(self):
-        return self.home
 
     def infect(self):
         seed()
