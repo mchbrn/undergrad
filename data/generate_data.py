@@ -54,45 +54,45 @@ def sex(random2):
         return data
 
 def ethnicity(random3):
-    # White
+    # white
     if (random3 <= 0.9828):
         data = "we,"
         return data
-    # Asian
+    # asian
     elif (random3 <= 0.9934):
         data = "an,"
         return data
-    # Asian
+    # black
     elif (random3 <= 0.9954):
         data = "bk,"
         return data
-    # Black
+    # mixed
     elif (random3 <= 0.9987):
         data = "md,"
         return data
-    # Other
+    # other
     elif (random3 <= 1.0):
         data = "or,"
         return data
 
 def health(random4):
-    # Very good health
+    # very good health
     if (random4 <= 0.4772):
         data = "4,"
         return data
-    # Good health
+    # good health
     elif (random4 <= 0.7951):
         data = "3,"
         return data
-    # Fair health
+    # fair health
     elif (random4 <= 0.9436):
         data = "2,"
         return data
-    # Bad health
+    # bad health
     elif (random4 <= 0.9881):
         data = "1,"
         return data
-    # Very bad health
+    # very bad health
     elif (random4 <= 1.0):
         data = "0,"
         return data

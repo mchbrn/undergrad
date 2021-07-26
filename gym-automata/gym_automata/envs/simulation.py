@@ -37,9 +37,51 @@ class Simulation:
                     host = self.simulation.automata[automaton_number_current].getHost(x_current, y_current)
                     host_home = host.getHome()
                     host_state = host.getState()
+                    host_symptomatic = host.symptomatic
+                    host_counter = host.getCounter()
+                    host_threshold = host.threshold
                     host_is_home = host_home == automaton_number_current
                     seed()
                     probability_change_automaton = random()
+
+                    if host_state == 0:
+                        pass
+                    # exposed -> infected
+                    elif host_state == 1 and host_counter == 2:
+                        host.setState()
+
+                        seed()
+                        chance_of_symptoms = random()
+
+                        if chance_of_symptoms > host_threshold:
+                            host.symptomatic = True
+                            report.setCase(automaton_number_current, True)
+                        else
+                            host.symptomatic = False
+                            report.setCase(automaton_number_current, False)
+                    # infected -> recovered/removed
+                    elif host_state == 2 and host_counter > 4:
+                        # host has recovered after 3 weeks
+                        if host_counter == 21:
+                            host.setState()
+                            report.setRecovery(automaton_number_current)
+                        elif host_symptomatic:
+                            seed()
+                            chance_of_death = random()
+
+                            # remove host from simulation
+                            if chance_of_death > host_threshold:
+                                pass
+                        # early asymptomatic -> recovered
+                        else:
+                            seed()
+                            chance_of_recovery = random()
+
+                            if chance_of_recovery > 0.8:
+                                pass
+                    elif host_state == 3 and host_counter <= 84:
+                        pass
+
                     # send host home if away
                     if host_is_home == False and probability_change_automaton > 0.5:
                         # home automaton is at capacity, move host around current automaton
@@ -98,7 +140,7 @@ class Simulation:
                             self.simulation.automata[automaton_number_current].transmit(x_new, y_new)
 
                     # if a day has passed, increment host counter
-                    if j % 19 == 0:
+                    if j == 19:
                         host.setCounter()
 
             # make weekly report
