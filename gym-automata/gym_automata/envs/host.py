@@ -9,14 +9,15 @@ class Host:
         self.ethnicity = ethnicity
         self.health = health
         self.state = state
-        self.symptomatic = None
+        self.symptomatic = False
+        self.self_isolating = False
         self.home = home
         # how many days since last state change
         self.counter = 0
-        self.threshold = setThreshold()
+        self.threshold = self.setThreshold()
 
     def getAttributes(self):
-        attributes = [self.age, self.sex, self.ethnicity, self.health, self.home]
+        attributes = [self.age, self.sex, self.ethnicity, self.health]
         return attributes
 
     def setState(self):
@@ -72,16 +73,16 @@ class Host:
         if self.ethnicity == 'we':
             threshold -= 0.00
         # asian
-        elif self.ethnictiy == 'an':
+        elif self.ethnicity == 'an':
             threshold -= 0.01
         # black
-        elif self.ethnictiy == 'bk':
+        elif self.ethnicity == 'bk':
             threshold -= 0.04
         # mixed
-        elif self.ethnictiy == 'md':
+        elif self.ethnicity == 'md':
             threshold -= 0.02
         # other
-        elif self.ethnictiy == 'or':
+        elif self.ethnicity == 'or':
             threshold -= 0.03
 
         # very good health
@@ -112,8 +113,7 @@ class Host:
         if chance_of_infection < 0.5:
             seed()
             self.setState()
+            attributes = self.getAttributes()
+            return attributes
         else:
             return None
-
-        infection = [self.state, self.infectious]
-        return infection

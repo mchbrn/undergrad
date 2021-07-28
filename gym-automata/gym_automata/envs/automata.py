@@ -13,8 +13,8 @@ class Automata:
         self.hosts_number_of = hosts_number_of
         self.automata = np.zeros((automata_number_of), dtype=object)
         self.locations = np.zeros((hosts_number_of,3), dtype='uint16')
-        # initial susceptible and infected hosts
-        self.report_initial = [{0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}, {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}]
+        self.report_initial = []
+        self.isolation_tank = np.zeros((hosts_number_of, 1), dtype=object)
 
         graph = nx.Graph()
 
@@ -96,8 +96,18 @@ class Automata:
         self.locations[host_number][1] = y
         self.locations[host_number][2] = automaton_number
 
+    def startIsolation(self, host, host_number):
+        x, y, automaton = self.getLocations(host_number)
+        self.automaton[automaton].removeHost(x, y)
+        self.isolation_tank[host_number] = host
+        self.setLocations(host_number, -1, -1, -1)
+
+    def endIsolation(self, host_number):
+        host = self.isolation_tank[host_number]
+        self.automata[host.home].setHost(host)
+        self.isolation_tank[host_number] = 0
+
     def removeHost(self, host_number):
         x, y, automaton = self.getLocations(host_number)
         self.locations.pop(host_number)
         self.automata[automaton].coordinates[x][y] = 0
-

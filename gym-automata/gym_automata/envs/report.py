@@ -8,8 +8,8 @@ class Report():
         axes_age = np.zeros((52, 10), dtype='int16')
         axes_sex = np.zeros((52, 2), dtype='int16')
         axes_ethnicity = np.zeros((52, 5), dtype='int16')
-        axes_health = np.zeros((52, 5) dtype='int16')
-        axes_automaton = np.zeros((52, 10) dtype='int16')
+        axes_health = np.zeros((52, 5), dtype='int16')
+        axes_automaton = np.zeros((52, 10), dtype='int16')
 
         self.susceptible = pd.Series(np.zeros((52), dtype='int16'))
         self.susceptible_age = pd.DataFrame(axes_age)
@@ -17,6 +17,13 @@ class Report():
         self.susceptible_ethnicity = pd.DataFrame(axes_ethnicity, columns=['we', 'an', 'bk', 'md', 'or'])
         self.susceptible_health = pd.DataFrame(axes_health)
         self.susceptible_automaton = pd.DataFrame(axes_automaton)
+
+        self.exposed = pd.Series(np.zeros((52), dtype='int16'))
+        self.exposed_age = pd.DataFrame(axes_age)
+        self.exposed_sex = pd.DataFrame(axes_sex, columns=['m', 'f'])
+        self.exposed_ethnicity = pd.DataFrame(axes_ethnicity, columns=['we', 'an', 'bk', 'md', 'or'])
+        self.exposed_health = pd.DataFrame(axes_health)
+        self.exposed_automaton = pd.DataFrame(axes_automaton)
 
         self.cases = pd.Series(np.zeros((52), dtype='int16'))
         self.cases_age = pd.DataFrame(axes_age)
@@ -68,8 +75,11 @@ class Report():
         self.lockdowns_automaton = pd.DataFrame(axes_automaton)
 
     def initialise(self, susceptible, cases_asymptomatic):
-        self.setSusceptible(susceptible, 0)
-        self.setCasesAsymptomatic(cases_asymptomatic, 0)
+        for attributes in susceptible:
+            self.setSusceptible(attributes, 0)
+        
+        for attributes in cases_asymptomatic:
+            self.setCaseAsymptomatic(attributes, 0)
 
     def setSusceptible(self, attributes, days):
         week = math.floor(days / 7)

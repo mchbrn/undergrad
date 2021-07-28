@@ -77,12 +77,13 @@ class Automaton:
         for cell in cells_taken:
             x, y = cell
             host = self.getHost(x, y)
-            host_state = host.getState()
+            host_state = host.state
             if host_state == 0:
                 infection = host.infect()
                 if infection:
                     infection.append(self.number)
                     infections.append(infection)
+
         return infections
 
     def getNeighbourhood(self, cell):
