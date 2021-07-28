@@ -32,7 +32,7 @@ class Simulation:
                 for k in range(self.simulation.hosts_number_of):
                     x_current, y_current, automaton_number_current = self.simulation.getLocations(k)
 
-                    # host is not self-isolating
+                    # host locations get set to -1 when in self-isolation
                     if x_current != -1:
                         host = self.simulation.automata[automaton_number_current].getHost(x_current, y_current)
                         host.self_isolating = False
@@ -180,3 +180,5 @@ class Simulation:
                     # if a day has passed, increment host counter
                     if j == 19:
                         host.setCounter()
+
+        self.report.makeReports()

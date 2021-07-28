@@ -1,10 +1,15 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 import math
 import numpy as np
 import pandas as pd
+import os
 
 class Report():
     def __init__(self):
+        datetime_now = datetime.now()
+        self.now = datetime_now.strftime("%d-%m-%Y-%H-%M-%S")
+
         axes_age = np.zeros((52, 10), dtype='int16')
         axes_sex = np.zeros((52, 2), dtype='int16')
         axes_ethnicity = np.zeros((52, 5), dtype='int16')
@@ -70,7 +75,7 @@ class Report():
         self.lockdowns = pd.Series(np.zeros((52), dtype='int16'))
         self.lockdowns_age = pd.DataFrame(axes_age)
         self.lockdowns_sex = pd.DataFrame(axes_sex, columns=['m', 'f'])
-        self.locdowns_ethnicity = pd.DataFrame(axes_ethnicity, columns=['we', 'an', 'bk', 'md', 'or'])
+        self.lockdowns_ethnicity = pd.DataFrame(axes_ethnicity, columns=['we', 'an', 'bk', 'md', 'or'])
         self.lockdowns_health = pd.DataFrame(axes_health)
         self.lockdowns_automaton = pd.DataFrame(axes_automaton)
 
@@ -80,6 +85,20 @@ class Report():
         
         for attributes in cases_asymptomatic:
             self.setCaseAsymptomatic(attributes, 0)
+
+        self.makeDirs()
+
+    def makeDirs(self):
+        os.mkdir('../../../data/simulations/' + self.now)
+        os.mkdir('../../../data/simulations/' + self.now + '/susceptible')
+        os.mkdir('../../../data/simulations/' + self.now + '/exposed')
+        os.mkdir('../../../data/simulations/' + self.now + '/cases')
+        os.mkdir('../../../data/simulations/' + self.now + '/cases/symptomatic')
+        os.mkdir('../../../data/simulations/' + self.now + '/cases/asymptomatic')
+        os.mkdir('../../../data/simulations/' + self.now + '/self-isolating')
+        os.mkdir('../../../data/simulations/' + self.now + '/recovered')
+        os.mkdir('../../../data/simulations/' + self.now + '/deaths')
+        os.mkdir('../../../data/simulations/' + self.now + '/lockdowns')
 
     def setSusceptible(self, attributes, days):
         week = math.floor(days / 7)
@@ -165,3 +184,121 @@ class Report():
 
     def setLockdowns(self, lockdowns):
         pass
+
+    def makeReports(self):
+        path = '../../../data/simulations/' + self.now +'/susceptible/total.csv'
+        self.susceptible.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/susceptible/age.csv'
+        self.susceptible_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/susceptible/sex.csv'
+        self.susceptible_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/susceptible/ethnicity.csv'
+        self.susceptible_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/susceptible/health.csv'
+        self.susceptible_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/susceptible/automaton.csv'
+        self.susceptible_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/exposed/total.csv'
+        self.exposed.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/exposed/age.csv'
+        self.exposed_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/exposed/sex.csv'
+        self.exposed_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/exposed/ethnicity.csv'
+        self.exposed_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/exposed/health.csv'
+        self.exposed_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/exposed/automaton.csv'
+        self.exposed_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/cases/total.csv'
+        self.cases.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/cases/age.csv'
+        self.cases_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/cases/sex.csv'
+        self.cases_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/ethnicity.csv'
+        self.cases_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/health.csv'
+        self.cases_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/automaton.csv'
+        self.cases_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/cases/symptomatic/total.csv'
+        self.cases_symptomatic.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/cases/symptomatic/age.csv'
+        self.cases_symptomatic_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/cases/symptomatic/sex.csv'
+        self.cases_symptomatic_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/symptomatic/ethnicity.csv'
+        self.cases_symptomatic_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/symptomatic/health.csv'
+        self.cases_symptomatic_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/symptomatic/automaton.csv'
+        self.cases_symptomatic_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/cases/asymptomatic/total.csv'
+        self.cases_asymptomatic.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/cases/asymptomatic/age.csv'
+        self.cases_asymptomatic_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/cases/asymptomatic/sex.csv'
+        self.cases_asymptomatic_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/asymptomatic/ethnicity.csv'
+        self.cases_asymptomatic_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/asymptomatic/health.csv'
+        self.cases_asymptomatic_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/cases/asymptomatic/automaton.csv'
+        self.cases_asymptomatic_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/self-isolating/total.csv'
+        self.self_isolating.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/self-isolating/age.csv'
+        self.self_isolating_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/self-isolating/sex.csv'
+        self.self_isolating_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/self-isolating/ethnicity.csv'
+        self.self_isolating_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/self-isolating/health.csv'
+        self.self_isolating_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/self-isolating/automaton.csv'
+        self.self_isolating_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/recovered/total.csv'
+        self.recovered.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/recovered/age.csv'
+        self.recovered_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/recovered/sex.csv'
+        self.recovered_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/recovered/ethnicity.csv'
+        self.recovered_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/recovered/health.csv'
+        self.recovered_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/recovered/automaton.csv'
+        self.recovered_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/deaths/total.csv'
+        self.deaths.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/deaths/age.csv'
+        self.deaths_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/deaths/sex.csv'
+        self.deaths_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/deaths/ethnicity.csv'
+        self.deaths_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/deaths/health.csv'
+        self.deaths_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/deaths/automaton.csv'
+        self.deaths_automaton.to_csv(path, index=False)
+
+        path = '../../../data/simulations/' + self.now +'/lockdowns/total.csv'
+        self.lockdowns.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/lockdowns/age.csv'
+        self.lockdowns_age.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now +'/lockdowns/sex.csv'
+        self.lockdowns_sex.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/lockdowns/ethnicity.csv'
+        self.lockdowns_ethnicity.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/lockdowns/health.csv'
+        self.lockdowns_health.to_csv(path, index=False)
+        path = '../../../data/simulations/' + self.now + '/lockdowns/automaton.csv'
+        self.lockdowns_automaton.to_csv(path, index=False)
