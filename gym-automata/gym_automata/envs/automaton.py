@@ -26,6 +26,7 @@ class Automaton:
         x = empty_cells[0][index]
         y = empty_cells[1][index]
         self.coordinates[x][y] = host
+        print("putting host in: " + str([x,y]))
         self.population += 1
         location_new = [x, y]
         return location_new
@@ -169,10 +170,8 @@ class Automaton:
         neighbourhood.append(cells_taken)
         return neighbourhood
 
-
     def unlock(self):
         self.state = 1
 
     def lock(self):
         self.state = 0
-

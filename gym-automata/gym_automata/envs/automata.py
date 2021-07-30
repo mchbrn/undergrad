@@ -11,8 +11,8 @@ class Automata:
     def __init__(self, automata_number_of, hosts_number_of):
         self.automata_number_of = automata_number_of
         self.hosts_number_of = hosts_number_of
-        self.automata = np.zeros((automata_number_of), dtype=object)
-        self.locations = np.zeros((hosts_number_of,3), dtype='uint16')
+        self.automata = np.zeros((automata_number_of + 2), dtype=object)
+        self.locations = np.zeros((hosts_number_of, 3), dtype='uint16')
         self.report_initial = []
         self.isolation_tank = np.zeros((hosts_number_of, 1), dtype=object)
 
@@ -47,7 +47,7 @@ class Automata:
         print("\n")
 
         # load population data
-        df_pop = pd.read_csv('../../../data/population.csv')
+        df_pop = pd.read_csv('../../../data/population2.csv')
 
         initial_susceptible = []
         initial_asymptomatic = []
@@ -83,31 +83,57 @@ class Automata:
     # move host to new automaton
     def changeAutomaton(self, host, automaton_number):
         x, y = self.automata[automaton_number].setHost(host)
+
+        cell = [x, y]
+        cells_available, cells_empty = self.automata[automaton_number].getNeighbourhood(cell)
+        print("cells available")
+        for cell_a in cells_available:
+            print(cell_a)
+            x_a, y_a = cell_a
+            print(self.automata[automaton_number].coordinates[x_a][y_a])
+
+        print("taken cells")
+        for cell_e in cells_empty:
+            print(cell_e)
+            x_e, y_e = cell_e
+            print(self.automata[automaton_number].coordinates[x_e][y_e])
+
         return [x, y]
 
-    def getLocations(self, host_number):
+    def getPositions(self, host_number):
         x = self.locations[host_number][0]
         y = self.locations[host_number][1]
         automaton_number = self.locations[host_number][2]
         return [x, y, automaton_number]
 
-    def setLocations(self, host_number, x, y, automaton_number):
+    def setPositions(self, host_number, x, y, automaton_number):
         self.locations[host_number][0] = x
         self.locations[host_number][1] = y
         self.locations[host_number][2] = automaton_number
 
     def startIsolation(self, host, host_number):
-        x, y, automaton = self.getLocations(host_number)
-        self.automaton[automaton].removeHost(x, y)
-        self.isolation_tank[host_number] = host
-        self.setLocations(host_number, -1, -1, -1)
+        host.self_isolating = True
+        print("starting self-isolation")
+        print(host)
+        x, y, automaton = self.getPositions(host_number)
+        self.automata[automaton].removeHost(x, y)
+        self.isolation_tank[host_number][0] = host
+        self.setPositions(host_number, 10, 0, 0)
 
     def endIsolation(self, host_number):
-        host = self.isolation_tank[host_number]
-        self.automata[host.home].setHost(host)
+        host = self.isolation_tank[host_number][0]
+        print("end self-isolation")
+        print(host)
+        host.self_isolating = False
+        x, y = self.automata[host.home].setHost(host)
         self.isolation_tank[host_number] = 0
+        self.setPositions(host_number, x, y, host.home)
 
-    def removeHost(self, host_number):
-        x, y, automaton = self.getLocations(host_number)
-        self.locations.pop(host_number)
-        self.automata[automaton].coordinates[x][y] = 0
+    def terminateHost(self, host_number, self_isolating):
+        if self_isolating:
+            self.isolation_tank[host_number] = 0
+        else:
+            x, y, automaton = self.getPositions(host_number)
+            self.automata[automaton].removeHost(x, y)
+
+        self.setPositions(host_number, 12, 0, 0)
