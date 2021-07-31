@@ -20,8 +20,10 @@ class Host:
         attributes = [self.age, self.sex, self.ethnicity, self.health]
         return attributes
 
-    def setState(self):
-        if self.state == 3:
+    def setState(self, dead):
+        if dead:
+            self.state = -1
+        elif self.state == 3:
             self.state = 0
         else:
             self.state += 1
@@ -112,7 +114,7 @@ class Host:
 
         if chance_of_infection < 0.5:
             seed()
-            self.setState()
+            self.setState(False)
             attributes = self.getAttributes()
             return attributes
         else:
