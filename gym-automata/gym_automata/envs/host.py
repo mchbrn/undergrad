@@ -2,11 +2,10 @@ from random import random
 from random import seed
 
 class Host:
-    def __init__(self, number, age, sex, ethnicity, health, state, home):
+    def __init__(self, number, age, sex, health, state, home):
         self.number = number
         self.age = age
         self.sex = sex
-        self.ethnicity = ethnicity
         self.health = health
         self.state = state
         self.symptomatic = False
@@ -17,7 +16,7 @@ class Host:
         self.threshold = self.setThreshold()
 
     def getAttributes(self):
-        attributes = [self.age, self.sex, self.ethnicity, self.health]
+        attributes = [self.age, self.sex, self.health]
         return attributes
 
     def setState(self, dead):
@@ -71,22 +70,6 @@ class Host:
         elif self.sex == 'm':
             threshold -= 0.04
 
-        # white
-        if self.ethnicity == 'we':
-            threshold -= 0.00
-        # asian
-        elif self.ethnicity == 'an':
-            threshold -= 0.01
-        # black
-        elif self.ethnicity == 'bk':
-            threshold -= 0.04
-        # mixed
-        elif self.ethnicity == 'md':
-            threshold -= 0.02
-        # other
-        elif self.ethnicity == 'or':
-            threshold -= 0.03
-
         # very good health
         if self.health == 0:
             threshold -= 0.00
@@ -112,7 +95,7 @@ class Host:
         seed()
         chance_of_infection = random()
 
-        if chance_of_infection < 0.5:
+        if chance_of_infection > 0.65:
             seed()
             self.setState(False)
             attributes = self.getAttributes()

@@ -53,104 +53,142 @@ def sex(random2):
         data = "f,"
         return data
 
-def ethnicity(random3):
-    # white
-    if (random3 <= 0.9828):
-        data = "we,"
-        return data
-    # asian
-    elif (random3 <= 0.9934):
-        data = "an,"
-        return data
-    # black
-    elif (random3 <= 0.9954):
-        data = "bk,"
-        return data
-    # mixed
-    elif (random3 <= 0.9987):
-        data = "md,"
-        return data
-    # other
-    elif (random3 <= 1.0):
-        data = "or,"
-        return data
-
-def health(random4):
+def health(random3):
     # very good health
-    if (random4 <= 0.4772):
-        data = "4,"
+    if (random3 <= 0.4772):
+        data = "0,"
         return data
     # good health
-    elif (random4 <= 0.7951):
-        data = "3,"
+    elif (random3 <= 0.7951):
+        data = "1,"
         return data
     # fair health
-    elif (random4 <= 0.9436):
+    elif (random3 <= 0.9436):
         data = "2,"
         return data
     # bad health
-    elif (random4 <= 0.9881):
-        data = "1,"
+    elif (random3 <= 0.9881):
+        data = "3,"
         return data
     # very bad health
-    elif (random4 <= 1.0):
-        data = "0,"
+    elif (random3 <= 1.0):
+        data = "4,"
         return data
 
-def state(random5):
-    # infectious
-    if (random5 <= 0.01):
-        data = "2,"
-        return data
-    # susceptible
-    elif (random5 <= 1.00):
-        data = "0,"
-        return data
-
-def town(random6):
+def stateAndTown(random5, random6):
+    # antrim and newtownabbey
+    if (random5 <= 0.0760):
+        # infectious
+        if (random6 <= 0.03):
+            data = "2,0"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,0"
+            return data
+    # ards and north down
+    elif (random5 <= 0.1616):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,1"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,1"
+            return data
+    # armagh city, banbridge and craigavon
+    elif (random5 <= 0.2756):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,2"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,2"
+            return data
     # belfast
-    if (random6 <= 0.4286):
-        data = "0"
-        return data
-    # derry
-    elif (random6 <= 0.5365):
-        data = "1"
-        return data
-    # cragiavon
-    elif (random6 <= 0.6262):
-        data = "2"
-        return data
-    # newtownabbey
-    elif (random6 <= 0.7110):
-        data = "3"
-        return data
-    # bangor
-    elif (random6 <= 0.7907):
-        data = "4"
-        return data
-    # lisburn
-    elif (random6 <= 0.8538):
-        data = "5"
-        return data
-    # ballymena
-    elif (random6 <= 0.8937):
-        data = "6"
-        return data
-    # newtownards
-    elif (random6 <= 0.9302):
-        data = "7"
-        return data
-    # newry
-    elif (random6 <= 0.9651):
-        data = "8"
-        return data
-    # carrickfergus
-    elif (random6 <= 1.0000):
-        data = "9"
-        return data
+    elif (random5 <= 0.4572):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,3"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,3"
+            return data
+    # causeway coast and glens
+    elif (random5 <= 0.5338):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,4"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,4"
+            return data
+    # derry city and strabane
+    elif (random5 <= 0.6135):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,5"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,5"
+            return data
+    # fermanagh and omagh
+    elif (random5 <= 0.6753):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,6"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,6"
+            return data
+    # lisburn and castlereagh
+    elif (random5 <= 0.7524):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,7"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,7"
+            return data
+    # mid and east antrim
+    elif (random5 <= 0.8258):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,8"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,8"
+            return data
+    # mid ulster
+    elif (random5 <= 0.9044):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,9"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,9"
+            return data
+    # newry, mourne and down
+    elif (random5 <= 1.0000):
+        # infectious
+        if (random6 <= 0.01):
+            data = "2,10"
+            return data
+        # susceptible
+        elif (random6 <= 1.00):
+            data = "0,10"
+            return data
 
 with open('population.csv', 'w') as f:
-    for i in range(602):
+    for i in range(1894):
         data = str(i) + ","
 
         seed()
@@ -166,22 +204,14 @@ with open('population.csv', 'w') as f:
         seed()
         random3 = random()
 
-        my_ethnicity = ethnicity(random3)
-
-        seed()
-        random4 = random()
-
-        my_health = health(random4)
+        my_health = health(random3)
 
         seed()
         random5 = random()
-
-        my_state = state(random5)
-
         seed()
         random6 = random()
 
-        my_town = town(random6)
+        my_state_and_town = stateAndTown(random5, random6)
 
-        data += my_age + my_sex + my_ethnicity + my_health + my_state + my_town + "\n"
+        data += my_age + my_sex + my_health + my_state_and_town + "\n"
         f.write(data)

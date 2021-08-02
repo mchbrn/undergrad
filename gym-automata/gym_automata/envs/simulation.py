@@ -12,30 +12,46 @@ import numpy as np
 import pandas as pd
 
 class Simulation:
-    def __init__(self, automata_number_of, hosts_number_of):
+    def __init__(self, automata_number_of, hosts_number_of, days, steps):
         self.simulation = Automata(automata_number_of, hosts_number_of)
         susceptible, cases_asymptomatic = self.simulation.report_initial
-        self.report = Report()
+        self.days = days
+        self.steps = steps
+        weeks = int(days / 7)
+        self.report = Report(weeks)
         self.report.initialise(susceptible, cases_asymptomatic)
 
-    def run(self, days, steps):
-        for i in range(days):
+    def run(self):
+        for i in range(self.days):
             update_01= "\rDay: " + str(i + 1)
             print("\n")
             print(update_01, end="")
             print("\n")
-            for j in range(steps):
+            for j in range(self.steps):
                 update_02 = "\rTime Step: " + str(j + 1)
                 print(update_02, end="")
                 # animate hosts
                 for k in range(self.simulation.hosts_number_of):
                     x_current, y_current, automaton_number_current = self.simulation.getPositions(k)
 
+                    #
+                    # LOCKDOWN BEHAVIOUR
+                    #
+                    if self.simulation.automata[automaton_number_current].locked == True:
+                        seed()
+                        chance_of_movement = random()
+
+                        # only allow 1% of hosts to move during a lockdown
+                        if chance_of_movement >= 0.99:
+                            pass
+                        else:
+                            continue
+
                     # host is dead
-                    if automaton_number_current == 11:
+                    if automaton_number_current == self.simulation.automaton_dead_number:
                         continue
                     # host is in self-isolation
-                    elif automaton_number_current == 10:
+                    elif automaton_number_current == self.simulation.automaton_isolation_number:
                         host = self.simulation.isolation_tank[k][0]
                     # host is in automata
                     else:
@@ -127,7 +143,7 @@ class Simulation:
                         seed()
                         probability_change_automaton = random()
                         # send host home if away
-                        if host_is_home == False and probability_change_automaton > 0.5:
+                        if host_is_home == False and probability_change_automaton >= 0.5:
                             # home automaton is at capacity, move host around current automaton
                             if self.simulation.automata[host_home].atCapacity():
                                 x_new, y_new = self.simulation.automata[automaton_number_current].move(x_current, y_current)
@@ -201,7 +217,7 @@ class Simulation:
                                     self.report.setExposed(infection, i)
 
                     # if a day has passed, increment host counter
-                    if j == 19:
+                    if j == self.steps - 1:
                         host.setCounter()
 
         self.report.makeReports()

@@ -1,11 +1,12 @@
 number,name,x,y,population
-0,"Belfast",27,34,258
-1,"Derry",17,20,65
-3,"Craigavon",18,21,54
-2,"Newtownabbey",14,20,51
-4,"Bangor",14,14,48
-5,"Lisburn",13,15,38
-6,"Ballymena",11,15,24
-7,"Newtownards",8,14,22
-8,"Newry",10,14,21
-9,"Carrickfergus",11,11,21
+0,Belfast,80,80,344
+1,Armagh City Banbridge and Craigavon,78,78,216
+2,Newry Mourne and Down,72,72,181
+3,Ards and North Down,67,67,162
+4,Derry City and Strabane,65,65,151
+5,Mid Ulster,65,65,149
+6,Lisburn and Castlereagh,64,64,146
+7,Causeway Coast and Glens,64,64,145
+8,Antrim and Newtownabbey,64,64,144
+9,Mid and East Antrim,63,63,139
+10,Fermanagh and Omagh,58,58,117

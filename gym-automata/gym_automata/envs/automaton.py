@@ -9,9 +9,9 @@ class Automaton:
         self.x = x - 1
         self.y = y - 1
         self.coordinates = np.zeros((x,y), dtype=object)
-        self.state = 1
+        self.locked = False
         self.population = population
-        self.capacity = round(((x * y) / 3.0))
+        self.capacity = round(population * 1.5)
         self.edges = edges
         self.edges_number_of = len(edges)
 
@@ -26,7 +26,6 @@ class Automaton:
         x = empty_cells[0][index]
         y = empty_cells[1][index]
         self.coordinates[x][y] = host
-        print("putting host in: " + str([x,y]))
         self.population += 1
         location_new = [x, y]
         return location_new
@@ -170,8 +169,8 @@ class Automaton:
         neighbourhood.append(cells_taken)
         return neighbourhood
 
-    def unlock(self):
-        self.state = 1
-
     def lock(self):
-        self.state = 0
+        self.locked = True
+
+    def unlock(self):
+        self.locked = False

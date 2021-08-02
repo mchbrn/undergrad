@@ -15,17 +15,21 @@ class Automata:
         self.locations = np.zeros((hosts_number_of, 3), dtype='uint16')
         self.report_initial = []
         self.isolation_tank = np.zeros((hosts_number_of, 1), dtype=object)
+        self.automaton_isolation_number = automata_number_of + 1
+        self.automaton_dead_number = automata_number_of + 2
 
         graph = nx.Graph()
 
         # declare all graph edges between vertices
-        graph_edges = [(0,3), (0,4), (0,5), (0,6), (0,7),
-                       (1,3), (1,6),
-                       (2,5), (2,8),
-                       (3,6), (3,9),
-                       (4,7),
-                       (5,8),
-                       (6,9)]
+        graph_edges = [(0,3), (0,6), (0,8),
+                       (1,2), (1,5), (1,6),
+                       (2,3), (2,6),
+                       (3,6),
+                       (4,5), (4,7), (4,10),
+                       (5,7), (5,8), (5,9), (5,10),
+                       (6,8),
+                       (7,9),
+                       (8,9)]
 
         graph.add_edges_from(graph_edges)
 
@@ -57,22 +61,21 @@ class Automata:
             number = int(data['number'])
             age = data['age']
             sex = data['sex']
-            ethnicity = data['ethnicity']
             health = data['health']
             state = int(data['state'])
-            town = int(data['town'])
-            host = Host(number, age, sex, ethnicity, health, state, town)
+            locality = int(data['locality'])
+            host = Host(number, age, sex, health, state, locality)
             # add host to automaton
-            location = self.automata[town].setHost(host)
+            location = self.automata[locality].setHost(host)
             # index host cell and automaton in array
             self.locations[number][0] = location[0]
             self.locations[number][1] = location[1]
-            self.locations[number][2] = town
+            self.locations[number][2] = locality
             if state == 0:
-                attributes = [age, sex, ethnicity, health, town]
+                attributes = [age, sex, health, locality]
                 initial_susceptible.append(attributes)
             elif state == 2:
-                attributes = [age, sex, ethnicity, health, town]
+                attributes = [age, sex, health, locality]
                 initial_asymptomatic.append(attributes)
             update = "\rBuilding hosts: " + str(number)
             print(update, end="")
@@ -101,7 +104,7 @@ class Automata:
         x, y, automaton = self.getPositions(host_number)
         self.automata[automaton].removeHost(x, y)
         self.isolation_tank[host_number][0] = host
-        self.setPositions(host_number, 0, 0, 10)
+        self.setPositions(host_number, 0, 0, self.automaton_isolation_number)
 
     def endIsolation(self, host_number):
         host = self.isolation_tank[host_number][0]
@@ -117,4 +120,4 @@ class Automata:
             x, y, automaton = self.getPositions(host_number)
             self.automata[automaton].removeHost(x, y)
 
-        self.setPositions(host_number, 0, 0, 11)
+        self.setPositions(host_number, 0, 0, self.automaton_dead_number)

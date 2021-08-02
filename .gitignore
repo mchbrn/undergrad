@@ -6,5 +6,4 @@ gym-automata/gym_automata/envs/test.py
 logic
 data/ni
 data/pops.py
-data/simulations/
-data/population2.csv
+data/simulations/*
