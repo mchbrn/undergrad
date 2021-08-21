@@ -1,4 +1,5 @@
-from automata import Automata
+from automata import Automata 
+from new_hosts import generate_hosts
 from report import Report
 from copy import deepcopy
 from datetime import datetime
@@ -13,6 +14,7 @@ import pandas as pd
 
 class Simulation:
     def __init__(self, automata_number_of, hosts_number_of, days, steps):
+        self.hosts_total_number_of = hosts_number_of
         self.simulation = Automata(automata_number_of, hosts_number_of)
         susceptible, cases_asymptomatic = self.simulation.report_initial
         self.days = days
@@ -20,6 +22,22 @@ class Simulation:
         weeks = int(days / 7)
         self.report = Report(weeks)
         self.report.initialise(susceptible, cases_asymptomatic)
+
+    def importHosts(self):
+        seed()
+        number_of_hosts = random()
+        number_of_hosts = number_of_hosts * 10
+        number_of_hosts = round(number_of_hosts , 0)
+        number_of_hosts = int(number_of_hosts)
+        hosts = generate_hosts(number_of_hosts, self.hosts_total_number_of - 1)
+        self.hosts_total_number_of += number_of_hosts
+        print("Importing hosts")
+        print(hosts)
+        
+        for host in hosts:
+            x, y = self.simulation.changeAutomaton(host, host.home)
+            self.simulation.locations = np.vstack([self.simulation.locations, [x, y, host.home]])
+            print(self.simulation.locations)
 
     def run(self):
         for i in range(self.days):
@@ -34,20 +52,8 @@ class Simulation:
                 for k in range(self.simulation.hosts_number_of):
                     x_current, y_current, automaton_number_current = self.simulation.getPositions(k)
 
-                    #
-                    # LOCKDOWN BEHAVIOUR
-                    #
-                    if self.simulation.automata[automaton_number_current].locked == True:
-                        seed()
-                        chance_of_movement = random()
 
-                        # only allow 1% of hosts to move during a lockdown
-                        if chance_of_movement >= 0.99:
-                            pass
-                        else:
-                            continue
-
-                    # host is dead
+                    # host is dead, skip to next host
                     if automaton_number_current == self.simulation.automaton_dead_number:
                         continue
                     # host is in self-isolation
@@ -56,6 +62,16 @@ class Simulation:
                     # host is in automata
                     else:
                         host = self.simulation.automata[automaton_number_current].getHost(x_current, y_current)
+                        # lockdown implementation
+                        if self.simulation.automata[automaton_number_current].locked == True:
+                            seed()
+                            chance_of_movement = random()
+
+                            # only allow 1% of hosts to move during a lockdown
+                            if chance_of_movement >= 0.99:
+                                pass
+                            else:
+                                continue
 
                     host_number = host.number
                     host_home = host.home
@@ -92,8 +108,8 @@ class Simulation:
                             self.report.setCaseAsymptomatic(host_attributes, i)
                     # infected -> recovered/removed
                     elif host_state == 2 and host_counter > 2:
-                        # host has recovered after 3 weeks
-                        if host_counter == 21:
+                        # host has recovered after 4 weeks
+                        if host_counter == 28:
                             host.setState(is_host_dead)
                             self.report.setRecovery(host_attributes, i)
                             if host_self_isolating:
@@ -119,18 +135,14 @@ class Simulation:
                                     self.simulation.startIsolation(host, host_number)
                                     continue
                         # early asymptomatic -> recovered
-                        else:
-                            # host has recovered after 3 weeks
-                            if host_counter == 21:
-                                host.setState(is_host_dead)
-                                self.report.setRecovery(host_attributes, i)
-                            else:
-                                seed()
-                                chance_of_recovery = random()
+                        # thinking of removing this
+                        #else:
+                        #    seed()
+                        #    chance_of_recovery = random()
 
-                                if chance_of_recovery > 0.8:
-                                    host.setState(is_host_dead)
-                                    self.report.setRecovery(host_attributes, i)
+                        #    if chance_of_recovery > 0.8:
+                        #        host.setState(is_host_dead)
+                        #        self.report.setRecovery(host_attributes, i)
                     # recovered host loses immunity after 12 weeks
                     elif host_state == 3 and host_counter == 84:
                         host.setState(is_host_dead)
@@ -219,5 +231,9 @@ class Simulation:
                     # if a day has passed, increment host counter
                     if j == self.steps - 1:
                         host.setCounter()
+            
+            # if a week has passed, import new hosts
+            if (i + 1) % 7 == 0:
+                self.importHosts()
 
         self.report.makeReports()
