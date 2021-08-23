@@ -23,21 +23,36 @@ class Simulation:
         self.report = Report(weeks)
         self.report.initialise(susceptible, cases_asymptomatic)
 
-    def importHosts(self):
+    def importHosts(self, days):
         seed()
         number_of_hosts = random()
         number_of_hosts = number_of_hosts * 10
         number_of_hosts = round(number_of_hosts , 0)
         number_of_hosts = int(number_of_hosts)
-        hosts = generate_hosts(number_of_hosts, self.hosts_total_number_of - 1)
-        self.hosts_total_number_of += number_of_hosts
-        print("Importing hosts")
-        print(hosts)
+        hosts = generate_hosts(number_of_hosts, self.simulation.hosts_number_of)
+
+        locations = []
         
+        # add imported hosts to their automata and save locations
         for host in hosts:
             x, y = self.simulation.changeAutomaton(host, host.home)
-            self.simulation.locations = np.vstack([self.simulation.locations, [x, y, host.home]])
-            print(self.simulation.locations)
+            location = [x, y, host.home]
+            locations.append(location)
+
+            attributes = host.getAttributes()
+            attributes.append(host.home)
+            self.report.setCaseAsymptomatic(attributes, days)
+
+        if locations:
+            # add locations of imported hosts to locations list
+            self.simulation.locations = np.vstack((self.simulation.locations, locations))
+            
+            # make isolation tank bigger to accommodate imported hosts
+            isolation_tank_extension = np.zeros((number_of_hosts, 1), dtype=object)
+            self.simulation.isolation_tank = np.vstack((self.simulation.isolation_tank, isolation_tank_extension))
+
+            # increase simulation's number of hosts variable
+            self.simulation.hosts_number_of += number_of_hosts
 
     def run(self):
         for i in range(self.days):
@@ -51,7 +66,6 @@ class Simulation:
                 # animate hosts
                 for k in range(self.simulation.hosts_number_of):
                     x_current, y_current, automaton_number_current = self.simulation.getPositions(k)
-
 
                     # host is dead, skip to next host
                     if automaton_number_current == self.simulation.automaton_dead_number:
@@ -234,6 +248,6 @@ class Simulation:
             
             # if a week has passed, import new hosts
             if (i + 1) % 7 == 0:
-                self.importHosts()
+                self.importHosts(i)
 
         self.report.makeReports()

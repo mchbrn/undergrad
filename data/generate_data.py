@@ -1,217 +1,137 @@
-from random import seed
 from random import random
+from random import seed
+from random import randrange
 
-def age(random1):
-    # 18 - 19
-    if (random1 <= 0.05149):
-        data = "0,"
-        return data
-    # 20 - 24
-    elif (random1 <= 0.14488):
-        data = "1,"
-        return data
-    # 25 - 29
-    elif (random1 <= 0.23717):
-        data = "2,"
-        return data
-    # 30 - 44
-    elif (random1 <= 0.46746):
-        data = "3,"
-        return data
-    # 45 - 59
-    elif (random1 <= 0.68335):
-        data = "4,"
-        return data
-    # 60 - 64
-    elif (random1 <= 0.75924):
-        data = "5,"
-        return data
-    # 65 - 74
-    elif (random1 <= 0.87343):
-        data = "6,"
-        return data
-    # 75 - 84
-    elif (random1 <= 0.94512):
-        data = "7,"
-        return data
-    # 85 - 89
-    elif (random1 <= 0.98061):
-        data = "8,"
-        return data
-    # 90 - ∞
-    elif (random1 <= 1.0):
-        data = "9,"
-        return data
+age = []
+sex = []
+health = []
+state = []
+district = []
 
-def sex(random2):
-    # Male
-    if (random2 <= 0.49):
-        data = "m,"
-        return data
-    # Female
-    elif (random2 <= 1.0):
-        data = "f,"
-        return data
+for i in range(95):
+    age.append(0)
 
-def health(random3):
-    # very good health
-    if (random3 <= 0.4772):
-        data = "0,"
-        return data
-    # good health
-    elif (random3 <= 0.7951):
-        data = "1,"
-        return data
-    # fair health
-    elif (random3 <= 0.9436):
-        data = "2,"
-        return data
-    # bad health
-    elif (random3 <= 0.9881):
-        data = "3,"
-        return data
-    # very bad health
-    elif (random3 <= 1.0):
-        data = "4,"
-        return data
+for i in range(175):
+    age.append(1)
 
-def stateAndTown(random5, random6):
-    # antrim and newtownabbey
-    if (random5 <= 0.0760):
-        # infectious
-        if (random6 <= 0.03):
-            data = "2,0"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,0"
-            return data
-    # ards and north down
-    elif (random5 <= 0.1616):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,1"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,1"
-            return data
-    # armagh city, banbridge and craigavon
-    elif (random5 <= 0.2756):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,2"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,2"
-            return data
-    # belfast
-    elif (random5 <= 0.4572):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,3"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,3"
-            return data
-    # causeway coast and glens
-    elif (random5 <= 0.5338):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,4"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,4"
-            return data
-    # derry city and strabane
-    elif (random5 <= 0.6135):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,5"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,5"
-            return data
-    # fermanagh and omagh
-    elif (random5 <= 0.6753):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,6"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,6"
-            return data
-    # lisburn and castlereagh
-    elif (random5 <= 0.7524):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,7"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,7"
-            return data
-    # mid and east antrim
-    elif (random5 <= 0.8258):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,8"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,8"
-            return data
-    # mid ulster
-    elif (random5 <= 0.9044):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,9"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,9"
-            return data
-    # newry, mourne and down
-    elif (random5 <= 1.0000):
-        # infectious
-        if (random6 <= 0.01):
-            data = "2,10"
-            return data
-        # susceptible
-        elif (random6 <= 1.00):
-            data = "0,10"
-            return data
+for i in range(173):
+    age.append(2)
 
-with open('population.csv', 'w') as f:
-    for i in range(1894):
-        data = str(i) + ","
+for i in range(434):
+    age.append(3)
+
+for i in range(407):
+    age.append(4)
+
+for i in range(142):
+    age.append(5)
+
+for i in range(214):
+    age.append(6)
+
+for i in range(134):
+    age.append(7)
+
+for i in range(65):
+    age.append(8)
+
+for i in range(54):
+    age.append(9)
+
+for i in range(928):
+    sex.append("m")
+
+for i in range(965):
+    sex.append("f")
+
+for i in range(903):
+    health.append(0)
+
+for i in range(602):
+    health.append(1)
+
+for i in range(281):
+    health.append(2)
+
+for i in range(84):
+    health.append(3)
+
+for i in range(23):
+    health.append(4)
+
+for i in range(1874):
+    state.append(0)
+
+for i in range(19):
+    state.append(2)
+
+for i in range(344):
+    district.append(0)
+
+for i in range(216):
+    district.append(1)
+
+for i in range(181):
+    district.append(2)
+
+for i in range(162):
+    district.append(3)
+
+for i in range(151):
+    district.append(4)
+
+for i in range(149):
+    district.append(5)
+
+for i in range(146):
+    district.append(6)
+
+for i in range(145):
+    district.append(7)
+
+for i in range(144):
+    district.append(8)
+
+for i in range(139):
+    district.append(9)
+
+for i in range(117):
+    district.append(10)
+
+with open("population.csv", "w") as f:
+    f.write("number,age,sex,health,state,district\n")
+    for i in range(1893):
+        len_age = len(age)
+        len_sex = len(sex)
+        len_health = len(health)
+        len_state = len(health)
+        len_district = len(district)
 
         seed()
-        random1 = random()
-
-        my_age = age(random1)
-
-        seed()
-        random2 = random()
-
-        my_sex = sex(random2)
+        random_age = randrange(0, len_age, 1)
+        host_age = age[random_age]
+        age.pop(random_age)
 
         seed()
-        random3 = random()
-
-        my_health = health(random3)
+        random_sex = randrange(0, len_sex, 1)
+        host_sex = sex[random_sex]
+        sex.pop(random_sex)
 
         seed()
-        random5 = random()
+        random_health = randrange(0, len_health, 1)
+        host_health = health[random_health]
+        health.pop(random_health)
+
         seed()
-        random6 = random()
+        random_state = randrange(0, len_state, 1)
+        host_state = state[random_state]
+        state.pop(random_state)
 
-        my_state_and_town = stateAndTown(random5, random6)
+        seed()
+        random_district = randrange(0, len_district, 1)
+        host_district = district[random_district]
+        district.pop(random_district)
 
-        data += my_age + my_sex + my_health + my_state_and_town + "\n"
+        data = str(i) + "," + str(host_age) + "," + str(host_sex) + "," + str(host_health) + "," + str(host_state) + "," + str(host_district) + "\n"
+
         f.write(data)

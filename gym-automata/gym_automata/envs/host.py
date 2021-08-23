@@ -95,7 +95,7 @@ class Host:
         seed()
         chance_of_infection = random()
 
-        if chance_of_infection > 0.825:
+        if chance_of_infection > 0.85:
             seed()
             self.setState(False)
             attributes = self.getAttributes()
