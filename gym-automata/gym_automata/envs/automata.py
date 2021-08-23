@@ -63,19 +63,19 @@ class Automata:
             sex = data['sex']
             health = data['health']
             state = int(data['state'])
-            locality = int(data['locality'])
-            host = Host(number, age, sex, health, state, locality)
+            district = int(data['district'])
+            host = Host(number, age, sex, health, state, district)
             # add host to automaton
-            location = self.automata[locality].setHost(host)
+            location = self.automata[district].setHost(host)
             # index host cell and automaton in array
             self.locations[number][0] = location[0]
             self.locations[number][1] = location[1]
-            self.locations[number][2] = locality
+            self.locations[number][2] = district
             if state == 0:
-                attributes = [age, sex, health, locality]
+                attributes = [age, sex, health, district]
                 initial_susceptible.append(attributes)
             elif state == 2:
-                attributes = [age, sex, health, locality]
+                attributes = [age, sex, health, district]
                 initial_asymptomatic.append(attributes)
             update = "\rBuilding hosts: " + str(number)
             print(update, end="")
