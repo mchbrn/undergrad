@@ -1,1 +1,1 @@
-from gym_automata.envs.automata import Automata
+from gym_automata.envs.simulation import Simulation

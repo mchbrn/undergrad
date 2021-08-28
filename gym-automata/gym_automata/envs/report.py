@@ -64,10 +64,10 @@ class Report():
         self.deaths_health = pd.DataFrame(deepcopy(axes_health))
         self.deaths_automaton = pd.DataFrame(deepcopy(axes_automaton))
 
-        self.lockdowns = pd.Series(np.zeros((weeks), dtype='int16'))
-        self.lockdowns_age = pd.DataFrame(deepcopy(axes_age))
-        self.lockdowns_sex = pd.DataFrame(deepcopy(axes_sex), columns=['m', 'f'])
-        self.lockdowns_health = pd.DataFrame(deepcopy(axes_health))
+        #self.lockdowns = pd.Series(np.zeros((weeks), dtype='int16'))
+        #self.lockdowns_age = pd.DataFrame(deepcopy(axes_age))
+        #self.lockdowns_sex = pd.DataFrame(deepcopy(axes_sex), columns=['m', 'f'])
+        #self.lockdowns_health = pd.DataFrame(deepcopy(axes_health))
         self.lockdowns_automaton = pd.DataFrame(deepcopy(axes_automaton))
 
     def initialise(self, susceptible, cases_asymptomatic):
@@ -78,6 +78,11 @@ class Report():
             self.setCaseAsymptomatic(attributes, 0)
 
         self.makeDirs()
+
+    def getObservation(self, day):
+        day += 1
+        week = int(day / 7)
+        return np.array([[self.lockdowns_automaton[week], self.cases_automaton[week]]])
 
     def makeDirs(self):
         os.mkdir('../../../data/simulations/' + self.now)
@@ -91,8 +96,9 @@ class Report():
         os.mkdir('../../../data/simulations/' + self.now + '/deaths')
         os.mkdir('../../../data/simulations/' + self.now + '/lockdowns')
 
-    def setSusceptible(self, attributes, days):
-        week = math.floor(days / 7)
+    def setSusceptible(self, attributes, day):
+        day += 1
+        week = math.floor(day / 7)
         age, sex, health, automaton = attributes
         self.susceptible[week] += 1
         self.susceptible_age[age][week] += 1
@@ -100,8 +106,9 @@ class Report():
         self.susceptible_health[health][week] += 1
         self.susceptible_automaton[automaton][week] += 1
 
-    def setExposed(self, attributes, days):
-        week = math.floor(days / 7)
+    def setExposed(self, attributes, day):
+        day += 1
+        week = math.floor(day / 7)
         age, sex, health, automaton = attributes
         self.exposed[week] += 1
         self.exposed_age[age][week] += 1
@@ -118,8 +125,9 @@ class Report():
         self.cases_health[health][week] += 1
         self.cases_automaton[automaton][week] += 1
 
-    def setCaseSymptomatic(self, attributes, days):
-        week = math.floor(days / 7)
+    def setCaseSymptomatic(self, attributes, day):
+        day += 1
+        week = math.floor(day / 7)
         self.setCase(attributes, week)
         age, sex, health, automaton = attributes
         self.cases_symptomatic[week] += 1
@@ -128,8 +136,9 @@ class Report():
         self.cases_symptomatic_health[health][week] += 1
         self.cases_symptomatic_automaton[automaton][week] += 1
 
-    def setCaseAsymptomatic(self, attributes, days):
-        week = math.floor(days / 7)
+    def setCaseAsymptomatic(self, attributes, day):
+        day += 1
+        week = math.floor(day / 7)
         self.setCase(attributes, week)
         age, sex, health, automaton = attributes
         self.cases_asymptomatic[week] += 1
@@ -138,7 +147,8 @@ class Report():
         self.cases_asymptomatic_health[health][week] += 1
         self.cases_asymptomatic_automaton[automaton][week] += 1
             
-    def setSelfIsolation(self, attributes, days):
+    def setSelfIsolation(self, attributes, day):
+        day += 1
         week = math.floor(days / 7)
         age, sex, health, automaton = attributes
         self.self_isolating[week] += 1
@@ -147,8 +157,9 @@ class Report():
         self.self_isolating_health[health][week] += 1
         self.self_isolating_automaton[automaton][week] += 1
 
-    def setRecovery(self, attributes, days):
-        week = math.floor(days / 7)
+    def setRecovery(self, attributes, day):
+        day += 1
+        week = math.floor(day / 7)
         age, sex, health, automaton = attributes
         self.recovered[week] += 1
         self.recovered_age[age][week] += 1
@@ -156,17 +167,20 @@ class Report():
         self.recovered_health[health][week] += 1
         self.recovered_automaton[automaton][week] += 1
 
-    def setDeath(self, attributes, days):
+    def setDeath(self, attributes, day):
+        day += 1
         age, sex, health, automaton = attributes
-        week = math.floor(days / 7)
+        week = math.floor(day / 7)
         self.deaths[week] += 1
         self.deaths_age[age][week] += 1
         self.deaths_sex[sex][week] += 1
         self.deaths_health[health][week] += 1
         self.deaths_automaton[automaton][week] += 1
 
-    def setLockdowns(self, lockdowns):
-        pass
+    def setLockdowns(self, automaton, day):
+        day += 1
+        week = math.floor(days / 7)
+        self.lockdowns_automaton[automaton][week] = 1
 
     def makeReports(self):
         path = '../../../data/simulations/' + self.now +'/susceptible/total.csv'
@@ -257,13 +271,13 @@ class Report():
         path = '../../../data/simulations/' + self.now + '/deaths/automaton.csv'
         self.deaths_automaton.to_csv(path, index=False)
 
-        path = '../../../data/simulations/' + self.now +'/lockdowns/total.csv'
-        self.lockdowns.to_csv(path, index=False)
-        path = '../../../data/simulations/' + self.now +'/lockdowns/age.csv'
-        self.lockdowns_age.to_csv(path, index=False)
-        path = '../../../data/simulations/' + self.now +'/lockdowns/sex.csv'
-        self.lockdowns_sex.to_csv(path, index=False)
-        path = '../../../data/simulations/' + self.now + '/lockdowns/health.csv'
-        self.lockdowns_health.to_csv(path, index=False)
+        #path = '../../../data/simulations/' + self.now +'/lockdowns/total.csv'
+        #self.lockdowns.to_csv(path, index=False)
+        #path = '../../../data/simulations/' + self.now +'/lockdowns/age.csv'
+        #self.lockdowns_age.to_csv(path, index=False)
+        #path = '../../../data/simulations/' + self.now +'/lockdowns/sex.csv'
+        #self.lockdowns_sex.to_csv(path, index=False)
+        #path = '../../../data/simulations/' + self.now + '/lockdowns/health.csv'
+        #self.lockdowns_health.to_csv(path, index=False)
         path = '../../../data/simulations/' + self.now + '/lockdowns/automaton.csv'
         self.lockdowns_automaton.to_csv(path, index=False)

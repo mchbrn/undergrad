@@ -13,102 +13,29 @@ import math
 import numpy as np
 import pandas as pd
 
-class Simulation(gym.Env):
-    def __init__(self, automata_number_of, hosts_number_of, days_total, moves):
-        super(Simulation, self).__init__()
-        # set gym variables
-        # agent can unlock (0) or lock(1) any of the 11 automata
-        self.action_space = spaces.Box(low=np.array([0,0,0,0,0,0,0,0,0,0,0]), high=np.array([1,1,1,1,1,1,1,1,1,1,1]), dtype='int16')
-        # agent observes last week's lockdown status and number of cases of the automata
-        # list #1 in low and high refer to unlocked or locked automata
-        # list #2 in low and high refer to minimum and maximum number of cases in automata
-        self.observation_space = spaces.Box(low=np.array([[0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0,0]]), high=np.array([[1,1,1,1,1,1,1,1,1,1,1], [344,216,181,162,151,149,146,145,144,139,117]]), dtype='int16')
-        # minimum reward for if all 11 automata are locked and all hosts are infected
-        # maximum for no lockdowns or cases
-        self.reward_range = (0,22)
-        # a step is equal to 1 week
-        self.steps = 0
-        self.day = 0
-
+class Simulation():
+    def __init__(self, automata_number_of, hosts_number_of, days, steps):
         # set envrioment variables
         self.automata_number_of = automata_number_of
         self.hosts_number_of = hosts_number_of
         self.simulation = Automata(self.automata_number_of, self.hosts_number_of)
         susceptible, cases_asymptomatic = self.simulation.report_initial
-        self.days_total = days_total
-        self.weeks_total = int(days_total / 7)
-        self.moves = moves
-        self.report = Report(self.weeks_total)
+        self.days = days
+        self.steps = steps
+        self.weeks = int(days / 7)
+        self.report = Report(self.weeks)
         self.report.initialise(susceptible, cases_asymptomatic)
-
-    def step(self, action):
-        self.takeAction(action)
-
-        # maxium reward
-        reward = 22
-
-        # run a week of simulation
-        self.run()
-
-        observation = self.report.getObservation(self.day)
-
-        automata_lockdowns, automata_cases = observation
-
-        for lockdowns in automata_lockdowns:
-            if lockdown == 1:
-                reward -= 1
-
-        for cases in automata_cases:
-            reward -= cases * 0.00687
-
-        # reset simulation
-        if self.steps == self.weeks_total:
-            self.reset()
-
-        self.steps += 1
-
-        done = False
-
-        return observation, reward, done, {}
-
-    # reset environment every 52 weeks
-    def reset(self):
-        # make reports and instantiate new report object
-        self.report.makeReports()
-        self.report = Report(self.weeks_total)
-
-        # instantiate new automata with same hosts but different infections
-        self.simulation = Automata(self.automata_number_of, self.hosts_number_of)
-
-        # initialise report
-        susceptible, cases_asymptomatic = self.simulation.report_initial
-        self.report.initialise(susceptible, cases_asymptomatic)
-
-        return self.nextObservation(0)
-
-    def nextObservation(self, day):
-        day += 1
-        week = int(day / 7)
-        observation = self.report.getObservation(week)
-        return observation
-
-    def takeAction(action):
-        for index, lockdown in enumerate(action):
-            if lockdown == 1:
-                self.simulation.automata[index].lock()
-                self.report.setLockdowns(index, self.day)
-            else:
-                self.simulation.automata[index].unlock()
 
     def run(self):
-        # 7 days in a week
-        for i in range(7):
-            update_01= "\rDay: " + str(self.day + 1)
+        for i in range(self.days):
+            update_01= "\rDay: " + str(i + 1)
+            print("\n")
             print(update_01, end="")
             print("\n")
-            # however many moves in a day
-            for j in range(self.moves):
-                # animate cells
+            for j in range(self.steps):
+                update_02 = "\rTime Step: " + str(j + 1)
+                print(update_02, end="")
+                # animate hosts
                 for k in range(self.simulation.hosts_number_of):
                     x_current, y_current, automaton_number_current = self.simulation.getPositions(k)
 
@@ -161,16 +88,16 @@ class Simulation(gym.Env):
 
                         if chance_of_symptoms > host_threshold:
                             host.symptomatic = True
-                            self.report.setCaseSymptomatic(host_attributes, self.day)
+                            self.report.setCaseSymptomatic(host_attributes, i)
                         else:
                             host.symptomatic = False
-                            self.report.setCaseAsymptomatic(host_attributes, self.day)
+                            self.report.setCaseAsymptomatic(host_attributes, i)
                     # infected -> recovered/removed
                     elif host_state == 2 and host_counter > 2:
                         # host has recovered after 4 weeks
                         if host_counter == 28:
                             host.setState(is_host_dead)
-                            self.report.setRecovery(host_attributes, self.day)
+                            self.report.setRecovery(host_attributes, i)
                             if host_self_isolating:
                                 self.simulation.endIsolation(host)
                         elif host_symptomatic:
@@ -185,12 +112,12 @@ class Simulation(gym.Env):
                                     self.simulation.terminateHost(host_number, False)
                                 is_host_dead = True
                                 host.setState(is_host_dead)
-                                self.report.setDeath(host_attributes, self.day)
+                                self.report.setDeath(host_attributes, i)
                                 continue
 
                             if host_self_isolating == False:
                                 if host_counter == 3:
-                                    self.report.setSelfIsolation(host_attributes, self.day)
+                                    self.report.setSelfIsolation(host_attributes, i)
                                     self.simulation.startIsolation(host, host_number)
                                     continue
                         # early asymptomatic -> recovered
@@ -201,11 +128,11 @@ class Simulation(gym.Env):
 
                         #    if chance_of_recovery > 0.8:
                         #        host.setState(is_host_dead)
-                        #        self.report.setRecovery(host_attributes, self.day)
+                        #        self.report.setRecovery(host_attributes, i)
                     # recovered host loses immunity after 12 weeks
                     elif host_state == 3 and host_counter == 84:
                         host.setState(is_host_dead)
-                        self.report.setSusceptible(host_attributes, self.day)
+                        self.report.setSusceptible(host_attributes, i)
 
                     #
                     # MOVE HOSTS
@@ -225,7 +152,7 @@ class Simulation(gym.Env):
                                     infections = self.simulation.automata[automaton_number_current].transmit(x_new, y_new)
                                     # record exposed hosts
                                     for infection in infections:
-                                        self.report.setExposed(infection, self.day)
+                                        self.report.setExposed(infection, i)
                             else:
                                 self.simulation.automata[automaton_number_current].removeHost(x_current, y_current)
                                 x_new, y_new = self.simulation.changeAutomaton(host, host_home)
@@ -236,7 +163,7 @@ class Simulation(gym.Env):
                                     infections = self.simulation.automata[host_home].transmit(x_new, y_new)
                                     # record exposed hosts
                                     for infection in infections:
-                                        self.report.setExposed(infection, self.day)
+                                        self.report.setExposed(infection, i)
                         # allow host to change automaton
                         elif probability_change_automaton <= 0.1:
                             edges = deepcopy(self.simulation.automata[automaton_number_current].getEdges())
@@ -261,7 +188,7 @@ class Simulation(gym.Env):
                                             infections = self.simulation.automata[automaton_number_new].transmit(x_new, y_new)
                                             # record exposed hosts
                                             for infection in infections:
-                                                self.report.setExposed(infection, self.day)
+                                                self.report.setExposed(infection, i)
                                         break
                                 # all neighbouring automata are at capacity or locked, move host around current automaton
                                 else:
@@ -273,7 +200,7 @@ class Simulation(gym.Env):
                                         infections = self.simulation.automata[automaton_number_current].transmit(x_new, y_new)
                                         # record exposed hosts
                                         for infection in infections:
-                                            self.report.setExposed(infection, self.day)
+                                            self.report.setExposed(infection, i)
                                     break
                         # move host around current automaton
                         else:
@@ -285,16 +212,27 @@ class Simulation(gym.Env):
                                 infections = self.simulation.automata[automaton_number_current].transmit(x_new, y_new)
                                 # record exposed hosts
                                 for infection in infections:
-                                    self.report.setExposed(infection, self.day)
+                                    self.report.setExposed(infection, i)
 
                     # if a day has passed, increment host counter
-                    if j == self.moves - 1:
-                        self.day += 1
+                    if j == self.steps - 1:
                         host.setCounter()
             
             # if a week has passed, import new hosts
             if (i + 1) % 7 == 0:
-                self.importHosts(self.day)
+                self.importHosts(i)
+
+                week = math.floor(i / 7)
+
+                for automaton in self.simulation.automata:
+                    # cases exceed 5% of population
+                    if self.report.cases_automaton[automaton.number][week] >= (self.simulation.automata[automaton.number].population / 100) * 15:
+                        self.simulation.automata[automaton.number].lock()
+                        self.report.setLockdowns(automaton.number, i)
+                    else:
+                        self.simulation.automata[automaton.number].unlock()
+
+        self.report.makeReports()
 
     def importHosts(self, days):
         seed()

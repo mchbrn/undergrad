@@ -59,11 +59,8 @@ for i in range(84):
 for i in range(23):
     health.append(4)
 
-for i in range(1874):
+for i in range(1893):
     state.append(0)
-
-for i in range(19):
-    state.append(2)
 
 for i in range(344):
     district.append(0)

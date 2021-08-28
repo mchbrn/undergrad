@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 from random import random
 from random import seed
-import random
 import networkx as nx
 
 class Automata:
@@ -62,7 +61,15 @@ class Automata:
             age = data['age']
             sex = data['sex']
             health = data['health']
-            state = int(data['state'])
+
+            seed()
+            chance_of_infection = random()
+
+            if chance_of_infection > 0.9:
+                state = 2
+            else:
+                state = int(data['state'])
+
             district = int(data['district'])
             host = Host(number, age, sex, health, state, district)
             # add host to automaton
