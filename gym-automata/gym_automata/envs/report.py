@@ -80,9 +80,9 @@ class Report():
         self.makeDirs()
 
     def getObservation(self, day):
-        day += 1
         week = int(day / 7)
-        return np.array([[self.lockdowns_automaton[week], self.cases_automaton[week]]])
+        observation = np.array([[self.lockdowns_automaton.iloc[week], self.cases_automaton.iloc[week]]])
+        return observation
 
     def makeDirs(self):
         os.mkdir('../../../data/simulations/' + self.now)
@@ -97,7 +97,6 @@ class Report():
         os.mkdir('../../../data/simulations/' + self.now + '/lockdowns')
 
     def setSusceptible(self, attributes, day):
-        day += 1
         week = math.floor(day / 7)
         age, sex, health, automaton = attributes
         self.susceptible[week] += 1
@@ -107,7 +106,6 @@ class Report():
         self.susceptible_automaton[automaton][week] += 1
 
     def setExposed(self, attributes, day):
-        day += 1
         week = math.floor(day / 7)
         age, sex, health, automaton = attributes
         self.exposed[week] += 1
@@ -126,7 +124,6 @@ class Report():
         self.cases_automaton[automaton][week] += 1
 
     def setCaseSymptomatic(self, attributes, day):
-        day += 1
         week = math.floor(day / 7)
         self.setCase(attributes, week)
         age, sex, health, automaton = attributes
@@ -137,7 +134,6 @@ class Report():
         self.cases_symptomatic_automaton[automaton][week] += 1
 
     def setCaseAsymptomatic(self, attributes, day):
-        day += 1
         week = math.floor(day / 7)
         self.setCase(attributes, week)
         age, sex, health, automaton = attributes
@@ -148,8 +144,7 @@ class Report():
         self.cases_asymptomatic_automaton[automaton][week] += 1
             
     def setSelfIsolation(self, attributes, day):
-        day += 1
-        week = math.floor(days / 7)
+        week = math.floor(day / 7)
         age, sex, health, automaton = attributes
         self.self_isolating[week] += 1
         self.self_isolating_age[age][week] += 1
@@ -158,7 +153,6 @@ class Report():
         self.self_isolating_automaton[automaton][week] += 1
 
     def setRecovery(self, attributes, day):
-        day += 1
         week = math.floor(day / 7)
         age, sex, health, automaton = attributes
         self.recovered[week] += 1
@@ -168,7 +162,6 @@ class Report():
         self.recovered_automaton[automaton][week] += 1
 
     def setDeath(self, attributes, day):
-        day += 1
         age, sex, health, automaton = attributes
         week = math.floor(day / 7)
         self.deaths[week] += 1
@@ -178,8 +171,7 @@ class Report():
         self.deaths_automaton[automaton][week] += 1
 
     def setLockdowns(self, automaton, day):
-        day += 1
-        week = math.floor(days / 7)
+        week = math.floor(day / 7)
         self.lockdowns_automaton[automaton][week] = 1
 
     def makeReports(self):

@@ -17,8 +17,9 @@ class Simulation(gym.Env):
     def __init__(self, automata_number_of, hosts_number_of, days_total, moves):
         super(Simulation, self).__init__()
         # set gym variables
-        # agent can unlock (0) or lock(1) any of the 11 automata
-        self.action_space = spaces.Box(low=np.array([0,0,0,0,0,0,0,0,0,0,0]), high=np.array([1,1,1,1,1,1,1,1,1,1,1]), dtype='int16')
+        # 11 automata that may be locked (1) or unlocked (0) reprepresented as a decimal value and later converted to an 11 bit binary number
+        # wanted to use a Box space here but dqn required discrete action space
+        self.action_space = spaces.Discrete(2048)
         # agent observes last week's lockdown status and number of cases of the automata
         # list #1 in low and high refer to unlocked or locked automata
         # list #2 in low and high refer to minimum and maximum number of cases in automata
@@ -27,62 +28,70 @@ class Simulation(gym.Env):
         # maximum for no lockdowns or cases
         self.reward_range = (0,22)
         # a step is equal to 1 week
-        self.steps = 0
-        self.day = 0
 
         # set envrioment variables
         self.automata_number_of = automata_number_of
         self.hosts_number_of = hosts_number_of
-        self.simulation = Automata(self.automata_number_of, self.hosts_number_of)
-        susceptible, cases_asymptomatic = self.simulation.report_initial
         self.days_total = days_total
         self.weeks_total = int(days_total / 7)
         self.moves = moves
         self.report = Report(self.weeks_total)
-        self.report.initialise(susceptible, cases_asymptomatic)
+
+        # set simulation variables
+        self.steps = 0
+        self.day = 0
+        self.simulation_number = 1
+        self.done = False
 
     def step(self, action):
+        self.steps += 1
+
         self.takeAction(action)
+
+        # run a week of the simulation
+        self.run()
 
         # maxium reward
         reward = 22
 
-        # run a week of simulation
-        self.run()
-
         observation = self.report.getObservation(self.day)
+        automata_lockdowns, automata_cases = observation[0]
 
-        automata_lockdowns, automata_cases = observation
+        # discount reward for every lockdown the agent executes
+        for lockdown in automata_lockdowns:
+            # if lockded (1) minus 1, if unlocked (0) minus 0
+            reward -= lockdown
 
-        for lockdowns in automata_lockdowns:
-            if lockdown == 1:
-                reward -= 1
-
+        # discount reward for every new case
         for cases in automata_cases:
             reward -= cases * 0.00687
 
         # reset simulation
-        if self.steps == self.weeks_total:
-            self.reset()
+        if self.steps + 1 == self.weeks_total:
+            self.report.makeReports()
+            self.done = True
 
-        self.steps += 1
-
-        done = False
-
-        return observation, reward, done, {}
+        return observation, reward, self.done, {}
 
     # reset environment every 52 weeks
     def reset(self):
-        # make reports and instantiate new report object
-        self.report.makeReports()
-        self.report = Report(self.weeks_total)
+        print("\n")
+        print("----Simulation: " + str(self.simulation_number) + "----")
 
+        self.simulation_number += 1
         # instantiate new automata with same hosts but different infections
         self.simulation = Automata(self.automata_number_of, self.hosts_number_of)
+        # instantiate new report
+        self.report = Report(self.weeks_total)
 
         # initialise report
         susceptible, cases_asymptomatic = self.simulation.report_initial
         self.report.initialise(susceptible, cases_asymptomatic)
+
+        # reset simulation variables
+        self.steps = 0
+        self.day = 0
+        self.done = False
 
         return self.nextObservation(0)
 
@@ -92,8 +101,19 @@ class Simulation(gym.Env):
         observation = self.report.getObservation(week)
         return observation
 
-    def takeAction(action):
-        for index, lockdown in enumerate(action):
+    def takeAction(self, action):
+        decimal = action
+
+        binary = np.zeros((self.automata_number_of), dtype='int8')
+
+        # convert decimal action into binary where each bit represents locking (1) or unlocking (0) the automaton whose number matches the bit's index
+        for bit in range(len(binary)):
+            if decimal % 2 == 1:
+                binary[bit] = 1
+
+        binary = np.flip(binary)
+
+        for index, lockdown in enumerate(binary):
             if lockdown == 1:
                 self.simulation.automata[index].lock()
                 self.report.setLockdowns(index, self.day)
@@ -105,7 +125,6 @@ class Simulation(gym.Env):
         for i in range(7):
             update_01= "\rDay: " + str(self.day + 1)
             print(update_01, end="")
-            print("\n")
             # however many moves in a day
             for j in range(self.moves):
                 # animate cells
@@ -193,15 +212,6 @@ class Simulation(gym.Env):
                                     self.report.setSelfIsolation(host_attributes, self.day)
                                     self.simulation.startIsolation(host, host_number)
                                     continue
-                        # early asymptomatic -> recovered
-                        # thinking of removing this
-                        #else:
-                        #    seed()
-                        #    chance_of_recovery = random()
-
-                        #    if chance_of_recovery > 0.8:
-                        #        host.setState(is_host_dead)
-                        #        self.report.setRecovery(host_attributes, self.day)
                     # recovered host loses immunity after 12 weeks
                     elif host_state == 3 and host_counter == 84:
                         host.setState(is_host_dead)
@@ -289,12 +299,13 @@ class Simulation(gym.Env):
 
                     # if a day has passed, increment host counter
                     if j == self.moves - 1:
-                        self.day += 1
                         host.setCounter()
             
             # if a week has passed, import new hosts
             if (i + 1) % 7 == 0:
                 self.importHosts(self.day)
+
+            self.day += 1
 
     def importHosts(self, days):
         seed()

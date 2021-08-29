@@ -87,6 +87,8 @@ class Automata:
             update = "\rBuilding hosts: " + str(number)
             print(update, end="")
 
+        print("\n")
+
         self.report_initial.append(initial_susceptible)
         self.report_initial.append(initial_asymptomatic)
 
