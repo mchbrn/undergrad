@@ -191,7 +191,7 @@ class Simulation(gym.Env):
                             host.setState(is_host_dead)
                             self.report.setRecovery(host_attributes, self.day)
                             if host_self_isolating:
-                                self.simulation.endIsolation(host)
+                                self.simulation.endIsolation(host.number)
                         elif host_symptomatic:
                             seed()
                             chance_of_death = random()

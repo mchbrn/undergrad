@@ -14,7 +14,7 @@ model.save("dqn_automata")
 observation = env.reset()
 
 # train agent over 1000 simulations
-for i in range(1000)
+for i in range(1000):
     action, states = model.predict(observation)
     observation, reward, done, info = env.step(action)
     if done:
