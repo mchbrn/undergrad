@@ -79,8 +79,8 @@ class Report():
 
         self.makeDirs()
 
-    def getObservation(self, day):
-        week = int(day / 7)
+    def getObservation(self, step):
+        week = step
         observation = np.array([[self.lockdowns_automaton.iloc[week], self.cases_automaton.iloc[week]]])
         return observation
 

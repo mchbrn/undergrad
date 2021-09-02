@@ -40,12 +40,10 @@ class Simulation(gym.Env):
         # set simulation variables
         self.steps = 0
         self.day = 0
-        self.simulation_number = 1
+        self.episode_number = 1
         self.done = False
 
     def step(self, action):
-        self.steps += 1
-
         self.takeAction(action)
 
         # run a week of the simulation
@@ -54,7 +52,7 @@ class Simulation(gym.Env):
         # maxium reward
         reward = 22
 
-        observation = self.report.getObservation(self.day)
+        observation = self.report.getObservation(self.steps)
         automata_lockdowns, automata_cases = observation[0]
 
         # discount reward for every lockdown the agent executes
@@ -66,8 +64,10 @@ class Simulation(gym.Env):
         for cases in automata_cases:
             reward -= cases * 0.00687
 
+        self.steps += 1
+
         # reset simulation
-        if self.steps + 1 == self.weeks_total:
+        if self.steps == self.weeks_total:
             self.report.makeReports()
             self.done = True
 
@@ -76,9 +76,9 @@ class Simulation(gym.Env):
     # reset environment every 52 weeks
     def reset(self):
         print("\n")
-        print("----Simulation: " + str(self.simulation_number) + "----")
+        print("------Episode " + str(self.episode_number) + "------")
 
-        self.simulation_number += 1
+        self.episode_number += 1
         # instantiate new automata with same hosts but different infections
         self.simulation = Automata(self.automata_number_of, self.hosts_number_of)
         # instantiate new report
