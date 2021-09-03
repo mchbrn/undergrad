@@ -62,7 +62,7 @@ class Simulation(gym.Env):
 
         # discount reward for every new case
         for cases in automata_cases:
-            reward -= cases * 0.00687
+            reward -= cases * 0.100722
 
         self.steps += 1
 
