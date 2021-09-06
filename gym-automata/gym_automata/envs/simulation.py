@@ -50,7 +50,7 @@ class Simulation(gym.Env):
         self.run()
 
         # maxium reward
-        reward = 22
+        reward = 11
 
         observation = self.report.getObservation(self.steps)
         automata_lockdowns, automata_cases = observation[0]
@@ -62,7 +62,7 @@ class Simulation(gym.Env):
 
         # discount reward for every new case
         for cases in automata_cases:
-            reward -= cases * 0.100722
+            reward -= cases * 0.005811
 
         self.steps += 1
 
@@ -110,6 +110,9 @@ class Simulation(gym.Env):
         for bit in range(len(binary)):
             if decimal % 2 == 1:
                 binary[bit] = 1
+
+            decimal /= 2
+            decimal = int(decimal)
 
         binary = np.flip(binary)
 

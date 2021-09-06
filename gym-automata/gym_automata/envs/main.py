@@ -8,7 +8,7 @@ env = gym.make('gym_automata:automata-v0', automata_number_of=11, hosts_number_o
 # instantiate dqn agent
 model = DQN("MlpPolicy", env, verbose=1)
 # train agent over 1000 episodes
-model.learn(total_timesteps=52000)
+model.learn(total_timesteps=104000)
 model.save("dqn_automata")
 
 # reset environment to initialise it
