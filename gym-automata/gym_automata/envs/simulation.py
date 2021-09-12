@@ -26,7 +26,7 @@ class Simulation(gym.Env):
         self.observation_space = spaces.Box(low=np.array([[0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0,0]]), high=np.array([[1,1,1,1,1,1,1,1,1,1,1], [344,216,181,162,151,149,146,145,144,139,117]]), dtype='int16')
         # minimum reward for if all 11 automata are locked and all hosts are infected
         # maximum for no lockdowns or cases
-        self.reward_range = (0,22)
+        self.reward_range = (-11,11)
         # a step is equal to 1 week
 
         # set envrioment variables
@@ -102,7 +102,7 @@ class Simulation(gym.Env):
         return observation
 
     def takeAction(self, action):
-        decimal = action
+        decimal = int(action)
 
         binary = np.zeros((self.automata_number_of), dtype='int8')
 
