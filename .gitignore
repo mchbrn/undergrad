@@ -6,3 +6,5 @@ gym-automata/gym_automata/envs/test.py
 logic
 data/ni
 data/pops.py
+generate_graphs.ipynb
+generate_graphs.pdf
